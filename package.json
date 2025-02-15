@@ -7,7 +7,7 @@
     "email": "n_cole_summers@icloud.com"
   },
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev --turbo --hostname 0.0.0.0",
     "build": "tsx lib/db/migrate && next build",
     "start": "next start",
     "lint": "next lint && biome lint --write --unsafe",
