@@ -2,6 +2,10 @@
   "name": "ai-chatbot",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "N.Cole Summers",
+    "email": "n_cole_summers@icloud.com"
+  },
   "scripts": {
     "dev": "next dev --turbo",
     "build": "tsx lib/db/migrate && next build",
