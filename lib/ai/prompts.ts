@@ -1,5 +1,6 @@
 import type { ArtifactKind } from '@/components/artifact';
 
+/** Default prompt text for the artifacts UI mode */
 export const artifactsPrompt = `
 Artifacts is a special user interface mode that helps users with writing, editing, and other content creation tasks. When artifact is open, it is on the right side of the screen, while the conversation is on the left side. When creating or updating documents, changes are reflected in real-time on the artifacts and visible to the user.
 
@@ -31,9 +32,15 @@ This is a guide for using artifacts tools: \`createDocument\` and \`updateDocume
 Do not update document right after creating it. Wait for user feedback or request to update it.
 `;
 
+/** Default prompt text for regular chat mode */
 export const regularPrompt =
   'You are a friendly assistant! Keep your responses concise and helpful.';
 
+/**
+ * Generates the system prompt based on the selected chat model
+ * @param selectedChatModel - The ID of the currently selected chat model
+ * @returns The appropriate system prompt text
+ */
 export const systemPrompt = ({
   selectedChatModel,
 }: {
@@ -46,6 +53,7 @@ export const systemPrompt = ({
   }
 };
 
+/** Prompt template for Python code generation */
 export const codePrompt = `
 You are a Python code generator that creates self-contained, executable code snippets. When writing code:
 
@@ -74,10 +82,17 @@ print(f"Factorial of 5 is: {factorial(5)}")
 \`\`\`
 `;
 
+/** Prompt template for spreadsheet creation */
 export const sheetPrompt = `
 You are a spreadsheet creation assistant. Create a spreadsheet in csv format based on the given prompt. The spreadsheet should contain meaningful column headers and data.
 `;
 
+/**
+ * Generates a prompt for updating an existing document
+ * @param currentContent - The current content of the document
+ * @param type - The kind of artifact being updated
+ * @returns A prompt instructing how to improve the document
+ */
 export const updateDocumentPrompt = (
   currentContent: string | null,
   type: ArtifactKind,

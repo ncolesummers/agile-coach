@@ -1,17 +1,29 @@
-import { generateUUID } from '@/lib/utils';
-import { type DataStreamWriter, tool } from 'ai';
-import { z } from 'zod';
-import type { Session } from 'next-auth';
 import {
   artifactKinds,
   documentHandlersByArtifactKind,
 } from '@/lib/artifacts/server';
+import { generateUUID } from '@/lib/utils';
+import { type DataStreamWriter, tool } from 'ai';
+import type { Session } from 'next-auth';
+import { z } from 'zod';
 
+/**
+ * Properties for creating a new document.
+ * @typedef {Object} CreateDocumentProps
+ * @property {Session} session - The user's authentication session.
+ * @property {DataStreamWriter} dataStream - The data stream writer.
+ */
 interface CreateDocumentProps {
   session: Session;
   dataStream: DataStreamWriter;
 }
 
+/**
+ * Tool to create a new document intended for writing or content creation.
+ * @function createDocument
+ * @param {CreateDocumentProps} props - The properties required to create a document.
+ * @returns {Tool} A tool configured for document creation.
+ */
 export const createDocument = ({ session, dataStream }: CreateDocumentProps) =>
   tool({
     description:
@@ -20,6 +32,15 @@ export const createDocument = ({ session, dataStream }: CreateDocumentProps) =>
       title: z.string(),
       kind: z.enum(artifactKinds),
     }),
+    /**
+     * Executes the document creation process.
+     * @async
+     * @function execute
+     * @param {Object} params - The parameters for document creation.
+     * @param {string} params.title - The title of the document.
+     * @param {string} params.kind - The kind of artifact for the document.
+     * @returns {Promise<Object>} The created document details.
+     */
     execute: async ({ title, kind }) => {
       const id = generateUUID();
 

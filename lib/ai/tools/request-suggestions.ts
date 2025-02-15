@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import type { Session } from 'next-auth';
-import { type DataStreamWriter, streamObject, tool } from 'ai';
 import { getDocumentById, saveSuggestions } from '@/lib/db/queries';
 import type { Suggestion } from '@/lib/db/schema';
 import { generateUUID } from '@/lib/utils';
+import { type DataStreamWriter, streamObject, tool } from 'ai';
+import type { Session } from 'next-auth';
+import { z } from 'zod';
 import { myProvider } from '../models';
 
 /**
@@ -11,6 +11,17 @@ import { myProvider } from '../models';
  * @interface RequestSuggestionsProps
  * @property {Session} session - The user's authentication session
  * @property {DataStreamWriter} dataStream - Stream for writing real-time updates
+ */
+interface RequestSuggestionsProps {
+  session: Session;
+  dataStream: DataStreamWriter;
+}
+
+/**
+ * Properties required to request suggestions for a document.
+ * @typedef {Object} RequestSuggestionsProps
+ * @property {Session} session - The user's authentication session.
+ * @property {DataStreamWriter} dataStream - Stream writer for real-time updates.
  */
 interface RequestSuggestionsProps {
   session: Session;
