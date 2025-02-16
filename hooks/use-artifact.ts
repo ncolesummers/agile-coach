@@ -1,3 +1,9 @@
+/**
+ * Provides hooks for accessing and updating UI artifact data.
+ * @module hooks/use-artifact
+ * @packageDocumentation
+ */
+
 'use client';
 
 import useSWR from 'swr';
@@ -21,6 +27,14 @@ export const initialArtifactData: UIArtifact = {
 
 type Selector<T> = (state: UIArtifact) => T;
 
+/**
+ * Selects a specific portion of the UI artifact state.
+ * @param selector - Function to select a part of the artifact state.
+ * @returns The selected value from the artifact state.
+ * @see /src/components/artifact
+ * @example
+ * const title = useArtifactSelector(artifact => artifact.title);
+ */
 export function useArtifactSelector<Selected>(selector: Selector<Selected>) {
   const { data: localArtifact } = useSWR<UIArtifact>('artifact', null, {
     fallbackData: initialArtifactData,
@@ -34,6 +48,13 @@ export function useArtifactSelector<Selected>(selector: Selector<Selected>) {
   return selectedValue;
 }
 
+/**
+ * Provides hook access to the complete UI artifact along with its metadata.
+ * @returns An object containing the artifact, a setter function for the artifact, metadata, and a setter function for metadata.
+ * @see /src/components/artifact
+ * @example
+ * const { artifact, setArtifact } = useArtifact();
+ */
 export function useArtifact() {
   const { data: localArtifact, mutate: setLocalArtifact } = useSWR<UIArtifact>(
     'artifact',

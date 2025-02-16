@@ -1,3 +1,9 @@
+/**
+ * Provides tools for updating documents with user changes.
+ * @module ai/tools/update-document
+ * @packageDocumentation
+ */
+
 import { documentHandlersByArtifactKind } from '@/lib/artifacts/server';
 import { getDocumentById, } from '@/lib/db/queries';
 import { type DataStreamWriter, tool } from 'ai';
@@ -17,9 +23,13 @@ interface UpdateDocumentProps {
 
 /**
  * Tool to update a document based on the provided description.
- * @function updateDocument
- * @param {UpdateDocumentProps} props - The update document properties.
- * @returns {Tool} A tool configured to update a document.
+ * @param props - Contains the session for authentication and dataStream for real-time updates.
+ * @returns A tool object that executes the document update process.
+ * @throws When the document is not found or no handler exists for its kind.
+ * @example
+ * const updateTool = updateDocument({ session, dataStream });
+ * const result = await updateTool.execute({ id, description });
+ * @see /lib/ai/tools/create-document.ts
  */
 export const updateDocument = ({ session, dataStream }: UpdateDocumentProps) =>
   tool({

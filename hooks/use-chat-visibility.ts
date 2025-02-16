@@ -1,3 +1,9 @@
+/**
+ * Hook for managing chat visibility state and synchronizing with remote updates.
+ * @module hooks/use-chat-visibility
+ * @packageDocumentation
+ */
+
 'use client';
 
 import { updateChatVisibility } from '@/app/(chat)/actions';
@@ -6,6 +12,17 @@ import type { Chat } from '@/lib/db/schema';
 import { useMemo } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 
+/**
+ * Manages and updates the visibility for a given chat.
+ * @param params - An object containing chatId and the initial visibility.
+ *   - chatId: Unique identifier for the chat.
+ *   - initialVisibility: The default visibility when not set in the history.
+ * @returns An object with the current visibility type and a function to update it.
+ * @see /src/components/visibility-selector
+ * @see /src/lib/db/schema
+ * @example
+ * const { visibilityType, setVisibilityType } = useChatVisibility({ chatId: '123', initialVisibility: 'public' });
+ */
 export function useChatVisibility({
   chatId,
   initialVisibility,

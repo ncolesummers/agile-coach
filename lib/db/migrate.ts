@@ -7,6 +7,9 @@ config({
   path: '.env.local',
 });
 
+/**
+ * Runs database migrations using Drizzle ORM.
+ */
 const runMigrate = async () => {
   if (!process.env.POSTGRES_URL) {
     throw new Error('POSTGRES_URL is not defined');

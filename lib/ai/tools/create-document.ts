@@ -1,3 +1,9 @@
+/**
+ * Provides tools for creating new documents for content creation activities.
+ * @module ai/tools/create-document
+ * @packageDocumentation
+ */
+
 import {
   artifactKinds,
   documentHandlersByArtifactKind,
@@ -19,10 +25,14 @@ interface CreateDocumentProps {
 }
 
 /**
- * Tool to create a new document intended for writing or content creation.
- * @function createDocument
- * @param {CreateDocumentProps} props - The properties required to create a document.
- * @returns {Tool} A tool configured for document creation.
+ * Creates a tool to generate a new document based on title and kind.
+ * @param props - Contains the session and dataStream for real-time updates.
+ * @returns A tool object that executes the document creation process.
+ * @throws When no document handler is found for the specified kind.
+ * @example
+ * const createTool = createDocument({ session, dataStream });
+ * const result = await createTool.execute({ title: "My Document", kind: "text" });
+ * @see /lib/ai/tools/update-document.ts
  */
 export const createDocument = ({ session, dataStream }: CreateDocumentProps) =>
   tool({
@@ -32,38 +42,41 @@ export const createDocument = ({ session, dataStream }: CreateDocumentProps) =>
       title: z.string(),
       kind: z.enum(artifactKinds),
     }),
+
     /**
      * Executes the document creation process.
-     * @async
-     * @function execute
-     * @param {Object} params - The parameters for document creation.
-     * @param {string} params.title - The title of the document.
-     * @param {string} params.kind - The kind of artifact for the document.
-     * @returns {Promise<Object>} The created document details.
+     * @param params - Contains title and kind for the new document.
+     * @returns An object with details of the created document.
      */
     execute: async ({ title, kind }) => {
+      // Create a unique identifier for the new document
       const id = generateUUID();
 
+      // Write the type of artifact ('kind') to the data stream
       dataStream.writeData({
         type: 'kind',
         content: kind,
       });
 
+      // Write the unique ID of the document to the data stream
       dataStream.writeData({
         type: 'id',
         content: id,
       });
 
+      // Write the title of the document to the data stream
       dataStream.writeData({
         type: 'title',
         content: title,
       });
 
+      // Send a signal to clear existing content in the client/UI via the data stream
       dataStream.writeData({
         type: 'clear',
         content: '',
       });
 
+      // Look for a document handler that matches the provided kind
       const documentHandler = documentHandlersByArtifactKind.find(
         (documentHandlerByArtifactKind) =>
           documentHandlerByArtifactKind.kind === kind,
@@ -73,6 +86,7 @@ export const createDocument = ({ session, dataStream }: CreateDocumentProps) =>
         throw new Error(`No document handler found for kind: ${kind}`);
       }
 
+      // Call the handler's onCreateDocument method to perform additional setup/logic
       await documentHandler.onCreateDocument({
         id,
         title,
@@ -80,8 +94,10 @@ export const createDocument = ({ session, dataStream }: CreateDocumentProps) =>
         session,
       });
 
+      // Signal the end of the document creation process via the data stream
       dataStream.writeData({ type: 'finish', content: '' });
 
+      // Return the details of the created document
       return {
         id,
         title,

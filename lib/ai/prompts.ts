@@ -1,6 +1,16 @@
+/**
+ * Contains prompt templates and system messages for AI artifact interactions.
+ * @module ai/prompts
+ * @packageDocumentation
+ */
+
 import type { ArtifactKind } from '@/components/artifact';
 
-/** Default prompt text for the artifacts UI mode */
+/**
+ * Default prompt text for the artifacts UI mode.
+ * @returns A string containing detailed instructions for the artifacts UI mode.
+ * @see /lib/ai/models.ts
+ */
 export const artifactsPrompt = `
 Artifacts is a special user interface mode that helps users with writing, editing, and other content creation tasks. When artifact is open, it is on the right side of the screen, while the conversation is on the left side. When creating or updating documents, changes are reflected in real-time on the artifacts and visible to the user.
 
@@ -32,14 +42,20 @@ This is a guide for using artifacts tools: \`createDocument\` and \`updateDocume
 Do not update document right after creating it. Wait for user feedback or request to update it.
 `;
 
-/** Default prompt text for regular chat mode */
+/**
+ * Default prompt text for regular chat mode.
+ * @returns A string containing brief instructions for regular chat mode.
+ */
 export const regularPrompt =
   'You are a friendly assistant! Keep your responses concise and helpful.';
 
 /**
- * Generates the system prompt based on the selected chat model
- * @param selectedChatModel - The ID of the currently selected chat model
- * @returns The appropriate system prompt text
+ * Generates the system prompt based on the selected chat model.
+ * @param selectedChatModel - The identifier of the selected chat model.
+ * @returns A string containing the generated system prompt.
+ * @example
+ * const prompt = systemPrompt({ selectedChatModel: "chat-model-reasoning" });
+ * @see /lib/ai/models.ts
  */
 export const systemPrompt = ({
   selectedChatModel,
@@ -53,7 +69,10 @@ export const systemPrompt = ({
   }
 };
 
-/** Prompt template for Python code generation */
+/**
+ * Template for generating Python code snippets.
+ * @returns A string containing instructions and examples for Python code generation.
+ */
 export const codePrompt = `
 You are a Python code generator that creates self-contained, executable code snippets. When writing code:
 
@@ -82,16 +101,20 @@ print(f"Factorial of 5 is: {factorial(5)}")
 \`\`\`
 `;
 
-/** Prompt template for spreadsheet creation */
+/**
+ * Template for creating a spreadsheet in csv format.
+ * @returns A string containing instructions for spreadsheet creation.
+ */
 export const sheetPrompt = `
 You are a spreadsheet creation assistant. Create a spreadsheet in csv format based on the given prompt. The spreadsheet should contain meaningful column headers and data.
 `;
 
 /**
- * Generates a prompt for updating an existing document
- * @param currentContent - The current content of the document
- * @param type - The kind of artifact being updated
- * @returns A prompt instructing how to improve the document
+ * Generates a prompt for updating an existing document.
+ * @param currentContent - The current content of the document.
+ * @param type - The type of artifact being updated (e.g., text, code, or sheet).
+ * @returns A string providing instructions on how to update the document.
+ * @see /lib/ai/tools/update-document.ts
  */
 export const updateDocumentPrompt = (
   currentContent: string | null,

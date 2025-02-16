@@ -1,24 +1,39 @@
+/**
+ * Defines database schema models for tables including User, Chat, Message, Vote, Document, and Suggestion.
+ * @module db/schema
+ * @packageDocumentation
+ */
+
 import type { InferSelectModel } from 'drizzle-orm';
 import {
-  pgTable,
-  varchar,
-  timestamp,
-  json,
-  uuid,
-  text,
-  primaryKey,
-  foreignKey,
   boolean,
+  foreignKey,
+  json,
+  pgTable,
+  primaryKey,
+  text,
+  timestamp,
+  uuid,
+  varchar,
 } from 'drizzle-orm/pg-core';
 
+/**
+ * Schema definition for the 'User' table.
+  */
 export const user = pgTable('User', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   email: varchar('email', { length: 64 }).notNull(),
   password: varchar('password', { length: 64 }),
 });
 
+/**
+ * Type definition for a User row.
+  */
 export type User = InferSelectModel<typeof user>;
 
+/**
+ * Schema definition for the 'Chat' table.
+  */
 export const chat = pgTable('Chat', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   createdAt: timestamp('createdAt').notNull(),
@@ -31,8 +46,14 @@ export const chat = pgTable('Chat', {
     .default('private'),
 });
 
+/**
+ * Type definition for a Chat row.
+  */
 export type Chat = InferSelectModel<typeof chat>;
 
+/**
+ * Schema definition for the 'Message' table.
+  */
 export const message = pgTable('Message', {
   id: uuid('id').primaryKey().notNull().defaultRandom(),
   chatId: uuid('chatId')
@@ -43,8 +64,14 @@ export const message = pgTable('Message', {
   createdAt: timestamp('createdAt').notNull(),
 });
 
+/**
+ * Type definition for a Message row.
+  */
 export type Message = InferSelectModel<typeof message>;
 
+/**
+ * Schema definition for the 'Vote' table.
+  */
 export const vote = pgTable(
   'Vote',
   {
@@ -63,8 +90,14 @@ export const vote = pgTable(
   },
 );
 
+/**
+ * Type definition for a Vote row.
+  */
 export type Vote = InferSelectModel<typeof vote>;
 
+/**
+ * Schema definition for the 'Document' table.
+  */
 export const document = pgTable(
   'Document',
   {
@@ -86,8 +119,14 @@ export const document = pgTable(
   },
 );
 
+/**
+ * Type definition for a Document row.
+  */
 export type Document = InferSelectModel<typeof document>;
 
+/**
+ * Schema definition for the 'Suggestion' table.
+  */
 export const suggestion = pgTable(
   'Suggestion',
   {
@@ -112,4 +151,7 @@ export const suggestion = pgTable(
   }),
 );
 
+/**
+ * Type definition for a Suggestion row.
+  */
 export type Suggestion = InferSelectModel<typeof suggestion>;

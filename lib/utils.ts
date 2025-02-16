@@ -9,6 +9,13 @@ import { twMerge } from 'tailwind-merge';
 
 import type { Message as DBMessage, Document } from '@/lib/db/schema';
 
+/**
+ * Merges class names by evaluating the provided class values.
+ * @param inputs - List of class values that can be strings or objects
+ * @returns A merged string of class names
+ * @example
+ * const classes = cn('btn', condition && 'btn-active');
+ */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -18,6 +25,14 @@ interface ApplicationError extends Error {
   status: number;
 }
 
+/**
+ * Fetches data from a given URL and parses the JSON response.
+ * @param url - The URL to fetch data from
+ * @returns The parsed JSON response
+ * @throws {ApplicationError} When the response status is not OK
+ * @example
+ * const data = await fetcher('https://api.example.com/data');
+ */
 export const fetcher = async (url: string) => {
   const res = await fetch(url);
 
@@ -35,6 +50,13 @@ export const fetcher = async (url: string) => {
   return res.json();
 };
 
+/**
+ * Retrieves a value from localStorage by key.
+ * @param key - The storage key to retrieve data from
+ * @returns The parsed JSON value stored or an empty array if unavailable
+ * @example
+ * const items = getLocalStorage('myKey');
+ */
 export function getLocalStorage(key: string) {
   if (typeof window !== 'undefined') {
     return JSON.parse(localStorage.getItem(key) || '[]');
@@ -42,6 +64,12 @@ export function getLocalStorage(key: string) {
   return [];
 }
 
+/**
+ * Generates a random UUID (version 4 format).
+ * @returns A string representing a randomly generated UUID
+ * @example
+ * const id = generateUUID();
+ */
 export function generateUUID(): string {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
@@ -83,6 +111,14 @@ function addToolMessageToChat({
   });
 }
 
+/**
+ * Converts database messages into UI-friendly message objects.
+ * Handles tool messages, text messages, and reasoning content.
+ * @param messages - Array of messages from the database
+ * @returns Array of UI message objects
+ * @example
+ * const uiMessages = convertToUIMessages(dbMessages);
+ */
 export function convertToUIMessages(
   messages: Array<DBMessage>,
 ): Array<Message> {
@@ -132,6 +168,15 @@ export function convertToUIMessages(
 type ResponseMessageWithoutId = CoreToolMessage | CoreAssistantMessage;
 type ResponseMessage = ResponseMessageWithoutId & { id: string };
 
+/**
+ * Sanitizes response messages by preserving only the relevant parts.
+ * Attaches reasoning to assistant messages if provided.
+ * @param messages - Array of response messages to sanitize
+ * @param reasoning - Optional reasoning to append to assistant messages
+ * @returns Filtered array of sanitized response messages
+ * @example
+ * const sanitized = sanitizeResponseMessages({ messages, reasoning: 'Detailed analysis' });
+ */
 export function sanitizeResponseMessages({
   messages,
   reasoning,
@@ -141,6 +186,7 @@ export function sanitizeResponseMessages({
 }) {
   const toolResultIds: Array<string> = [];
 
+  // Identify valid tool result ids from tool messages
   for (const message of messages) {
     if (message.role === 'tool') {
       for (const content of message.content) {
@@ -156,6 +202,7 @@ export function sanitizeResponseMessages({
 
     if (typeof message.content === 'string') return message;
 
+    // Keep tool-call content only if its result exists and text content if not empty
     const sanitizedContent = message.content.filter((content) =>
       content.type === 'tool-call'
         ? toolResultIds.includes(content.toolCallId)
@@ -180,6 +227,14 @@ export function sanitizeResponseMessages({
   );
 }
 
+/**
+ * Sanitizes UI messages by cleansing tool invocations.
+ * Filters out incomplete entries ensuring only relevant invocations remain.
+ * @param messages - Array of UI messages to sanitize
+ * @returns An array of sanitized UI messages
+ * @example
+ * const cleanMessages = sanitizeUIMessages(uiMessages);
+ */
 export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
   const messagesBySanitizedToolInvocations = messages.map((message) => {
     if (message.role !== 'assistant') return message;
@@ -188,6 +243,7 @@ export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
 
     const toolResultIds: Array<string> = [];
 
+    // Collect tool call IDs that have results
     for (const toolInvocation of message.toolInvocations) {
       if (toolInvocation.state === 'result') {
         toolResultIds.push(toolInvocation.toolCallId);
@@ -213,11 +269,27 @@ export function sanitizeUIMessages(messages: Array<Message>): Array<Message> {
   );
 }
 
+/**
+ * Retrieves the most recent message sent by the user.
+ * @param messages - Array of UI messages
+ * @returns The last message with a user role, or undefined if none exist
+ * @example
+ * const latestMessage = getMostRecentUserMessage(messages);
+ */
 export function getMostRecentUserMessage(messages: Array<Message>) {
   const userMessages = messages.filter((message) => message.role === 'user');
   return userMessages.at(-1);
 }
 
+/**
+ * Returns the created timestamp of a document at a provided index.
+ * If no documents exist or index is out of bounds, returns the current date.
+ * @param documents - Array of document objects with timestamps
+ * @param index - Position of the document in the array
+ * @returns The creation timestamp of the document or current date if out of bounds
+ * @example
+ * const timestamp = getDocumentTimestampByIndex(docs, 2);
+ */
 export function getDocumentTimestampByIndex(
   documents: Array<Document>,
   index: number,

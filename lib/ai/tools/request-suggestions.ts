@@ -1,3 +1,9 @@
+/**
+ * Provides tools for requesting AI-powered writing suggestions for documents.
+ * @module ai/tools/request-suggestions
+ * @packageDocumentation
+ */
+
 import { getDocumentById, saveSuggestions } from '@/lib/db/queries';
 import type { Suggestion } from '@/lib/db/schema';
 import { generateUUID } from '@/lib/utils';
@@ -29,18 +35,14 @@ interface RequestSuggestionsProps {
 }
 
 /**
- * Creates a tool that generates AI-powered writing suggestions for documents
- * @param {RequestSuggestionsProps} props - Configuration options
- * @returns {Tool} A tool that can generate and save document suggestions
- *
+ * Creates a tool that generates AI-powered suggestions for a document.
+ * @param props - Contains the session for authentication and dataStream for real-time updates.
+ * @returns A tool object that, when executed, returns document suggestion results.
+ * @throws When the document is missing or its content is empty.
  * @example
- * ```typescript
- * const suggestionTool = requestSuggestions({
- *   session: userSession,
- *   dataStream: responseStream
- * });
+ * const suggestionTool = requestSuggestions({ session, dataStream });
  * const result = await suggestionTool.execute({ documentId: "doc123" });
- * ```
+ * @see /lib/ai/tools/update-document.ts
  */
 export const requestSuggestions = ({
   session,
@@ -54,17 +56,10 @@ export const requestSuggestions = ({
         .describe('The ID of the document to request edits'),
     }),
     /**
-     * Executes the suggestion generation process
-     * @async
-     * @param {Object} params - The execution parameters
-     * @param {string} params.documentId - ID of the document to analyze
-     * @returns {Promise<Object>} Result containing document info and status
-     * @throws {Error} When document is not found or content is empty
-     *
-     * @property {string} id - The document ID
-     * @property {string} title - The document title
-     * @property {string} kind - The document type
-     * @property {string} message - Status message about the suggestions
+     * Executes the suggestion generation process.
+     * @param params - Contains the documentId to analyze.
+     * @returns An object with document info and a status message.
+     * @throws When the document is not found or has empty content.
      */
     execute: async ({ documentId }) => {
       const document = await getDocumentById({ id: documentId });
@@ -76,13 +71,13 @@ export const requestSuggestions = ({
       }
 
       /**
-       * Array to collect generated suggestions before saving
-       * @type {Array<Omit<Suggestion, 'userId' | 'createdAt' | 'documentCreatedAt'>>}
+       * Array to collect generated suggestions before saving.
+       * @type {Array<Omit<Suggestion, 'userId' | 'createdAt' | 'documentCreatedAt'>}
        */
       const suggestions = [];
 
       /**
-       * Stream of AI-generated suggestions
+       * Stream of AI-generated suggestions.
        * @type {AsyncGenerator}
        */
       const { elementStream } = streamObject({
@@ -98,7 +93,7 @@ export const requestSuggestions = ({
         }),
       });
 
-      // Process each suggestion from the stream
+      // Process each suggestion from the stream.
       for await (const element of elementStream) {
         const suggestion = {
           originalText: element.originalSentence,
@@ -109,7 +104,7 @@ export const requestSuggestions = ({
           isResolved: false,
         };
 
-        // Send real-time updates to the client
+        // Send real-time updates to the client.
         dataStream.writeData({
           type: 'suggestion',
           content: suggestion,
@@ -118,7 +113,7 @@ export const requestSuggestions = ({
         suggestions.push(suggestion);
       }
 
-      // Save suggestions if user is authenticated
+      // Save suggestions if user is authenticated.
       if (session.user?.id) {
         const userId = session.user.id;
 

@@ -1,3 +1,9 @@
+/**
+ * Configures and exports language and image model providers used by AI tools.
+ * @module ai/models
+ * @packageDocumentation
+ */
+
 import { fireworks } from '@ai-sdk/fireworks';
 import { openai } from '@ai-sdk/openai';
 import {
@@ -6,12 +12,17 @@ import {
   wrapLanguageModel,
 } from 'ai';
 
-/** Default chat model ID used when none is specified */
+/**
+ * The default chat model identifier.
+ * @returns A string representing the default chat model.
+ * @see /lib/ai/prompts.ts
+ */
 export const DEFAULT_CHAT_MODEL: string = 'chat-model-small';
 
-/** 
- * Custom provider configuration for language and image models
- * Includes multiple model configurations for different use cases
+/**
+ * Custom provider configuration for language and image models.
+ * @returns A provider object with multiple model configurations.
+ * @see /lib/ai/tools/create-document.ts
  */
 export const myProvider = customProvider({
   languageModels: {
@@ -30,12 +41,12 @@ export const myProvider = customProvider({
   },
 });
 
-/** 
- * Represents a chat model configuration
+/**
+ * Represents a chat model configuration.
  * @interface ChatModel
- * @property {string} id - The unique identifier of the model
- * @property {string} name - The name of the model
- * @property {string} description - A brief description of the model
+ * @property id - The unique identifier of the model.
+ * @property name - The display name of the model.
+ * @property description - A brief description of the model.
  */
 interface ChatModel {
     id: string;
@@ -43,7 +54,11 @@ interface ChatModel {
     description: string;
 }
 
-/** Available chat models with their configurations */
+/**
+ * Array of available chat models and their configurations.
+ * @returns An array of chat model definitions.
+ * @see /lib/ai/prompts.ts
+ */
 export const chatModels: Array<ChatModel> = [
   {
     id: 'chat-model-small',

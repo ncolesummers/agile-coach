@@ -1,3 +1,9 @@
+/**
+ * Provides functions and plugins for editor suggestions and widgets.
+ * @module /lib/editor/suggestions
+ * @packageDocumentation
+ */
+
 import type { Node } from 'prosemirror-model';
 import { Plugin, PluginKey } from 'prosemirror-state';
 import {
@@ -7,10 +13,17 @@ import {
 } from 'prosemirror-view';
 import { createRoot } from 'react-dom/client';
 
+import type { ArtifactKind } from '@/components/artifact';
 import { Suggestion as PreviewSuggestion } from '@/components/suggestion';
 import type { Suggestion } from '@/lib/db/schema';
-import type { ArtifactKind } from '@/components/artifact';
 
+/**
+ * Extends Suggestion with selection positions for UI purposes.
+ * @typedef {Object} UISuggestion
+ * @property {number} selectionStart - The start of the selection range.
+ * @property {number} selectionEnd - The end of the selection range.
+ * @see /lib/db/schema
+ */
 export interface UISuggestion extends Suggestion {
   selectionStart: number;
   selectionEnd: number;
@@ -21,9 +34,19 @@ interface Position {
   end: number;
 }
 
+/**
+ * Finds the start and end positions of a search text in the ProseMirror document.
+ *
+ * @param doc - The ProseMirror document node.
+ * @param searchText - The text to search for.
+ * @returns The start and end positions if found, otherwise null.
+ * @example
+ * const pos = findPositionsInDoc(doc, "sample");
+ */
 function findPositionsInDoc(doc: Node, searchText: string): Position | null {
   let positions: { start: number; end: number } | null = null;
 
+  // Traverse through text nodes
   doc.nodesBetween(0, doc.content.size, (node, pos) => {
     if (node.isText && node.text) {
       const index = node.text.indexOf(searchText);
@@ -44,6 +67,16 @@ function findPositionsInDoc(doc: Node, searchText: string): Position | null {
   return positions;
 }
 
+/**
+ * Projects suggestions by adding selection positions based on the document content.
+ *
+ * @param doc - The ProseMirror document node.
+ * @param suggestions - The array of suggestions to project.
+ * @returns The array of UISuggestions with selection positions.
+ * @see /lib/editor/functions.tsx
+ * @example
+ * const uiSuggestions = projectWithPositions(doc, suggestions);
+ */
 export function projectWithPositions(
   doc: Node,
   suggestions: Array<Suggestion>,
@@ -67,6 +100,17 @@ export function projectWithPositions(
   });
 }
 
+/**
+ * Creates a suggestion widget rendered with React.
+ *
+ * @param suggestion - The suggestion data with UI positions.
+ * @param view - The ProseMirror editor view.
+ * @param artifactKind - The kind of artifact (default is 'text').
+ * @returns An object containing the widget DOM and a destroy method.
+ * @see /lib/editor/react-renderer.tsx
+ * @example
+ * const widget = createSuggestionWidget(suggestion, editorView);
+ */
 export function createSuggestionWidget(
   suggestion: UISuggestion,
   view: EditorView,
@@ -75,6 +119,7 @@ export function createSuggestionWidget(
   const dom = document.createElement('span');
   const root = createRoot(dom);
 
+  // Prevent focus loss on mousedown
   dom.addEventListener('mousedown', (event) => {
     event.preventDefault();
     view.dom.blur();
@@ -87,6 +132,7 @@ export function createSuggestionWidget(
     const currentState = suggestionsPluginKey.getState(state);
     const currentDecorations = currentState?.decorations;
 
+    // Remove decoration widget related to this suggestion
     if (currentDecorations) {
       const newDecorations = DecorationSet.create(
         state.doc,
@@ -102,6 +148,7 @@ export function createSuggestionWidget(
       dispatch(decorationTransaction);
     }
 
+    // Replace text with the suggested suggestion
     const textTransaction = view.state.tr.replaceWith(
       suggestion.selectionStart,
       suggestion.selectionEnd,
@@ -109,10 +156,10 @@ export function createSuggestionWidget(
     );
 
     textTransaction.setMeta('no-debounce', true);
-
     dispatch(textTransaction);
   };
 
+  // Render the suggestion widget using React
   root.render(
     <PreviewSuggestion
       suggestion={suggestion}
@@ -124,7 +171,7 @@ export function createSuggestionWidget(
   return {
     dom,
     destroy: () => {
-      // Wrapping unmount in setTimeout to avoid synchronous unmounting during render
+      // Delay unmounting to prevent synchronous issues during render
       setTimeout(() => {
         root.unmount();
       }, 0);
@@ -132,7 +179,17 @@ export function createSuggestionWidget(
   };
 }
 
+/**
+ * Unique key to associate suggestion plugin state.
+ * @see /lib/editor/functions.tsx
+ */
 export const suggestionsPluginKey = new PluginKey('suggestions');
+
+/**
+ * A ProseMirror plugin for handling suggestions decorations.
+ * @returns A ProseMirror plugin managing suggestion highlighting and widgets
+ * @see /lib/editor/functions.tsx
+ */
 export const suggestionsPlugin = new Plugin({
   key: suggestionsPluginKey,
   state: {

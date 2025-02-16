@@ -1,3 +1,9 @@
+/**
+ * Contains database query functions and mutations for User, Chat, Message, Vote, Document, and Suggestion.
+ * @module db/queries
+ * @packageDocumentation
+ */
+
 import 'server-only';
 
 import { genSaltSync, hashSync } from 'bcrypt-ts';
@@ -5,18 +11,18 @@ import { and, asc, desc, eq, gt, gte, inArray } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
+import type { ArtifactKind } from '@/components/artifact';
 import {
-  user,
   chat,
-  type User,
   document,
-  type Suggestion,
-  suggestion,
   type Message,
   message,
+  type Suggestion,
+  suggestion,
+  user,
+  type User,
   vote,
 } from './schema';
-import type { ArtifactKind } from '@/components/artifact';
 
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
@@ -26,6 +32,13 @@ import type { ArtifactKind } from '@/components/artifact';
 const client = postgres(process.env.POSTGRES_URL!);
 const db = drizzle(client);
 
+/**
+ * Retrieves a user by email.
+ * @param email - The user's email address.
+ * @returns An array of User rows.
+ * @throws When user retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getUser(email: string): Promise<Array<User>> {
   try {
     return await db.select().from(user).where(eq(user.email, email));
@@ -35,6 +48,14 @@ export async function getUser(email: string): Promise<Array<User>> {
   }
 }
 
+/**
+ * Creates a new user with the provided email and password.
+ * @param email - The user's email.
+ * @param password - The user's password.
+ * @returns The result of the insertion.
+ * @throws When user creation fails.
+ * @see /lib/db/schema.ts
+ */
 export async function createUser(email: string, password: string) {
   const salt = genSaltSync(10);
   const hash = hashSync(password, salt);
@@ -47,6 +68,13 @@ export async function createUser(email: string, password: string) {
   }
 }
 
+/**
+ * Saves a new chat entry.
+ * @param param0 - Object with chat id, user id, and title.
+ * @returns The result of the insertion.
+ * @throws When chat saving fails.
+ * @see /lib/db/schema.ts
+ */
 export async function saveChat({
   id,
   userId,
@@ -69,6 +97,13 @@ export async function saveChat({
   }
 }
 
+/**
+ * Deletes a chat and its associated votes and messages by chat id.
+ * @param param0 - Object with the chat id.
+ * @returns The result of the deletion.
+ * @throws When deletion fails.
+ * @see /lib/db/schema.ts
+ */
 export async function deleteChatById({ id }: { id: string }) {
   try {
     await db.delete(vote).where(eq(vote.chatId, id));
@@ -81,6 +116,13 @@ export async function deleteChatById({ id }: { id: string }) {
   }
 }
 
+/**
+ * Retrieves chats by user id.
+ * @param param0 - Object with the user id.
+ * @returns An array of Chat rows.
+ * @throws When retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getChatsByUserId({ id }: { id: string }) {
   try {
     return await db
@@ -94,6 +136,13 @@ export async function getChatsByUserId({ id }: { id: string }) {
   }
 }
 
+/**
+ * Retrieves a single chat by its id.
+ * @param param0 - Object with the chat id.
+ * @returns A Chat object.
+ * @throws When retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getChatById({ id }: { id: string }) {
   try {
     const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
@@ -104,6 +153,13 @@ export async function getChatById({ id }: { id: string }) {
   }
 }
 
+/**
+ * Saves an array of messages.
+ * @param param0 - Object containing an array of Message objects.
+ * @returns The result of the insertion.
+ * @throws When message saving fails.
+ * @see /lib/db/schema.ts
+ */
 export async function saveMessages({ messages }: { messages: Array<Message> }) {
   try {
     return await db.insert(message).values(messages);
@@ -113,6 +169,13 @@ export async function saveMessages({ messages }: { messages: Array<Message> }) {
   }
 }
 
+/**
+ * Retrieves messages by chat id.
+ * @param param0 - Object with the chat id.
+ * @returns An ordered array of Message objects.
+ * @throws When retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getMessagesByChatId({ id }: { id: string }) {
   try {
     return await db
@@ -126,6 +189,13 @@ export async function getMessagesByChatId({ id }: { id: string }) {
   }
 }
 
+/**
+ * Votes a message.
+ * @param param0 - Object with chatId, messageId, and vote type ('up' or 'down').
+ * @returns The result of the vote update or insertion.
+ * @throws When vote operation fails.
+ * @see /lib/db/schema.ts
+ */
 export async function voteMessage({
   chatId,
   messageId,
@@ -158,15 +228,29 @@ export async function voteMessage({
   }
 }
 
+/**
+ * Retrieves votes by chat id.
+ * @param param0 - Object with the chat id.
+ * @returns An array of Vote rows.
+ * @throws When vote retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getVotesByChatId({ id }: { id: string }) {
   try {
     return await db.select().from(vote).where(eq(vote.chatId, id));
   } catch (error) {
-    console.error('Failed to get votes by chat id from database', error);
+    console.error('Failed to get votes by chat id from database');
     throw error;
   }
 }
 
+/**
+ * Saves a document.
+ * @param param0 - Object with document details.
+ * @returns The result of the insertion.
+ * @throws When document saving fails.
+ * @see /lib/db/schema.ts
+ */
 export async function saveDocument({
   id,
   title,
@@ -195,6 +279,13 @@ export async function saveDocument({
   }
 }
 
+/**
+ * Retrieves documents by id.
+ * @param param0 - Object with the document id.
+ * @returns An array of Document rows.
+ * @throws When document retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getDocumentsById({ id }: { id: string }) {
   try {
     const documents = await db
@@ -210,6 +301,13 @@ export async function getDocumentsById({ id }: { id: string }) {
   }
 }
 
+/**
+ * Retrieves the latest document by id.
+ * @param param0 - Object with the document id.
+ * @returns A Document object.
+ * @throws When document retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getDocumentById({ id }: { id: string }) {
   try {
     const [selectedDocument] = await db
@@ -225,6 +323,13 @@ export async function getDocumentById({ id }: { id: string }) {
   }
 }
 
+/**
+ * Deletes documents and related suggestions after a specified timestamp.
+ * @param param0 - Object with the document id and timestamp.
+ * @returns The result of the deletion.
+ * @throws When deletion fails.
+ * @see /lib/db/schema.ts
+ */
 export async function deleteDocumentsByIdAfterTimestamp({
   id,
   timestamp,
@@ -253,6 +358,13 @@ export async function deleteDocumentsByIdAfterTimestamp({
   }
 }
 
+/**
+ * Saves an array of suggestions.
+ * @param param0 - Object containing an array of Suggestion objects.
+ * @returns The result of the insertion.
+ * @throws When suggestion saving fails.
+ * @see /lib/db/schema.ts
+ */
 export async function saveSuggestions({
   suggestions,
 }: {
@@ -266,6 +378,13 @@ export async function saveSuggestions({
   }
 }
 
+/**
+ * Retrieves suggestions by document id.
+ * @param param0 - Object with the document id.
+ * @returns An array of Suggestion rows.
+ * @throws When suggestion retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getSuggestionsByDocumentId({
   documentId,
 }: {
@@ -284,6 +403,13 @@ export async function getSuggestionsByDocumentId({
   }
 }
 
+/**
+ * Retrieves a message by its id.
+ * @param param0 - Object with the message id.
+ * @returns A Message object.
+ * @throws When message retrieval fails.
+ * @see /lib/db/schema.ts
+ */
 export async function getMessageById({ id }: { id: string }) {
   try {
     return await db.select().from(message).where(eq(message.id, id));
@@ -293,6 +419,13 @@ export async function getMessageById({ id }: { id: string }) {
   }
 }
 
+/**
+ * Deletes messages and associated votes after a specified timestamp.
+ * @param param0 - Object with the chat id and timestamp.
+ * @returns The result of the deletion.
+ * @throws When deletion fails.
+ * @see /lib/db/schema.ts
+ */
 export async function deleteMessagesByChatIdAfterTimestamp({
   chatId,
   timestamp,
@@ -331,6 +464,13 @@ export async function deleteMessagesByChatIdAfterTimestamp({
   }
 }
 
+/**
+ * Updates the visibility of a chat.
+ * @param param0 - Object with chat id and the new visibility ('private' or 'public').
+ * @returns The result of the update.
+ * @throws When updating chat visibility fails.
+ * @see /lib/db/schema.ts
+ */
 export async function updateChatVisiblityById({
   chatId,
   visibility,
