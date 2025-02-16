@@ -1,20 +1,51 @@
+/**
+ * Provides the Sheet components which implement a dialog-like overlay.
+ * @module ui/sheet
+ * @packageDocumentation
+ */
+
 'use client';
 
-import * as React from 'react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { X } from 'lucide-react';
-
 import { cn } from '@/lib/utils';
+import * as React from 'react';
 
+/**
+ * Root container for a Sheet overlay.
+ * @returns Sheet element.
+ * @see /components/ui/sheet.tsx
+ */
 const Sheet = SheetPrimitive.Root;
 
+/**
+ * Element to trigger the opening of the Sheet.
+ * @returns SheetTrigger element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetTrigger = SheetPrimitive.Trigger;
 
+/**
+ * Element to close the Sheet.
+ * @returns SheetClose element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetClose = SheetPrimitive.Close;
 
+/**
+ * Provides a Portal for rendering the Sheet components.
+ * @returns SheetPortal element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetPortal = SheetPrimitive.Portal;
 
+/**
+ * SheetOverlay renders the translucent background overlay.
+ * @param props - Props for the overlay element.
+ * @returns The overlay element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
@@ -53,6 +84,12 @@ interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}
 
+/**
+ * SheetContent renders the content area of the sheet.
+ * @param props - Props including side, children and custom classes.
+ * @returns The sheet content element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
@@ -74,6 +111,12 @@ const SheetContent = React.forwardRef<
 ));
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
+/**
+ * Container for header content within the Sheet.
+ * @param props - Props for the header container.
+ * @returns SheetHeader element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetHeader = ({
   className,
   ...props
@@ -88,6 +131,12 @@ const SheetHeader = ({
 );
 SheetHeader.displayName = 'SheetHeader';
 
+/**
+ * Container for footer content within the Sheet.
+ * @param props - Props for the footer container.
+ * @returns SheetFooter element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetFooter = ({
   className,
   ...props
@@ -102,6 +151,12 @@ const SheetFooter = ({
 );
 SheetFooter.displayName = 'SheetFooter';
 
+/**
+ * Title element within the Sheet.
+ * @param props - Props for the title.
+ * @returns SheetTitle element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetTitle = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
@@ -114,6 +169,12 @@ const SheetTitle = React.forwardRef<
 ));
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
 
+/**
+ * Description element for the Sheet.
+ * @param props - Props for the description.
+ * @returns SheetDescription element.
+ * @see /components/ui/sheet.tsx
+ */
 const SheetDescription = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>
@@ -127,14 +188,7 @@ const SheetDescription = React.forwardRef<
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 export {
-  Sheet,
-  SheetPortal,
-  SheetOverlay,
-  SheetTrigger,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetFooter,
-  SheetTitle,
-  SheetDescription,
+  Sheet, SheetClose,
+  SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetOverlay, SheetPortal, SheetTitle, SheetTrigger
 };
+

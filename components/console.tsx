@@ -1,5 +1,11 @@
-import { TerminalWindowIcon, LoaderIcon, CrossSmallIcon } from './icons';
-import { Button } from './ui/button';
+/**
+ * Renders the console interface for displaying outputs.
+ * @module components/console
+ * @packageDocumentation
+ */
+
+import { useArtifactSelector } from '@/hooks/use-artifact';
+import { cn } from '@/lib/utils';
 import {
   type Dispatch,
   type SetStateAction,
@@ -8,8 +14,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import { cn } from '@/lib/utils';
-import { useArtifactSelector } from '@/hooks/use-artifact';
+import { CrossSmallIcon, LoaderIcon, TerminalWindowIcon } from './icons';
+import { Button } from './ui/button';
 
 export interface ConsoleOutputContent {
   type: 'text' | 'image';
@@ -27,6 +33,13 @@ interface ConsoleProps {
   setConsoleOutputs: Dispatch<SetStateAction<Array<ConsoleOutput>>>;
 }
 
+/**
+ * Console component that renders output messages and allows resizing.
+ * @param consoleOutputs - Array of console outputs to display.
+ * @param setConsoleOutputs - Function to update the console outputs.
+ * @returns A React element representing the console, or null if no outputs are present.
+ * @see /src/lib/utils
+ */
 export function Console({ consoleOutputs, setConsoleOutputs }: ConsoleProps) {
   const [height, setHeight] = useState<number>(300);
   const [isResizing, setIsResizing] = useState(false);

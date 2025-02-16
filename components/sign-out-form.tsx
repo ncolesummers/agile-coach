@@ -1,7 +1,17 @@
+/**
+ * Form component to sign out the user.
+ * @module SignOutForm
+ * @packageDocumentation
+ */
 import Form from 'next/form';
 
 import { signOut } from '@/app/(auth)/auth';
 
+/**
+ * Initiates sign out process and redirects to home.
+ * @returns JSX element for the sign-out form.
+ * @see /src/app/(auth)/auth.ts
+ */
 export const SignOutForm = () => {
   return (
     <Form

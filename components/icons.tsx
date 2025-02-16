@@ -1,3 +1,14 @@
+/**
+ * Contains SVG icon components used throughout the UI.
+ * @module components/icons
+ * @packageDocumentation
+ */
+
+/**
+ * Renders the Bot icon as an SVG element.
+ * @returns Rendered Bot SVG element.
+ * @see /components/icons.tsx
+ */
 export const BotIcon = () => {
   return (
     <svg
@@ -17,6 +28,11 @@ export const BotIcon = () => {
   );
 };
 
+/**
+ * Renders the User icon as an SVG element.
+ * @returns Rendered User SVG element.
+ * @see /components/icons.tsx
+ */
 export const UserIcon = () => {
   return (
     <svg
@@ -37,6 +53,11 @@ export const UserIcon = () => {
   );
 };
 
+/**
+ * Renders the Attachment icon as an SVG element.
+ * @returns Rendered Attachment SVG element.
+ * @see /components/icons.tsx
+ */
 export const AttachmentIcon = () => {
   return (
     <svg
@@ -56,6 +77,12 @@ export const AttachmentIcon = () => {
   );
 };
 
+/**
+ * Renders the Vercel icon as an SVG element.
+ * @param size - Specified size of the icon.
+ * @returns Rendered Vercel SVG element.
+ * @see /components/icons.tsx
+ */
 export const VercelIcon = ({ size = 17 }) => {
   return (
     <svg
@@ -75,6 +102,11 @@ export const VercelIcon = ({ size = 17 }) => {
   );
 };
 
+/**
+ * Renders the Git icon as an SVG element.
+ * @returns Rendered Git SVG element.
+ * @see /components/icons.tsx
+ */
 export const GitIcon = () => {
   return (
     <svg

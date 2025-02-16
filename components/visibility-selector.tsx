@@ -1,22 +1,28 @@
+/**
+ * Provides a dropdown selector for chat visibility options.
+ * @module VisibilitySelector
+ * @packageDocumentation
+ */
+
 'use client';
 
-import { type ReactNode, useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { type ReactNode, useMemo, useState } from 'react';
 
-import {
-  CheckCircleFillIcon,
-  ChevronDownIcon,
-  GlobeIcon,
-  LockIcon,
-} from './icons';
 import { useChatVisibility } from '@/hooks/use-chat-visibility';
+import {
+    CheckCircleFillIcon,
+    ChevronDownIcon,
+    GlobeIcon,
+    LockIcon,
+} from './icons';
 
 export type VisibilityType = 'private' | 'public';
 
@@ -40,6 +46,15 @@ const visibilities: Array<{
   },
 ];
 
+/**
+ * Renders a visibility selector for chats.
+ * @param chatId - Identifier of the chat.
+ * @param selectedVisibilityType - Initial visibility type.
+ * @param className - Optional additional class names.
+ * @returns A JSX element representing the dropdown for selecting chat visibility.
+ * @see /components/ui/button
+ * @see /hooks/use-chat-visibility
+ */
 export function VisibilitySelector({
   chatId,
   className,

@@ -1,3 +1,9 @@
+/**
+ * Provides action buttons for messages, such as copying and voting.
+ * @module message-actions
+ * @packageDocumentation
+ */
+
 import type { Message } from 'ai';
 import { toast } from 'sonner';
 import { useSWRConfig } from 'swr';
@@ -5,6 +11,8 @@ import { useCopyToClipboard } from 'usehooks-ts';
 
 import type { Vote } from '@/lib/db/schema';
 
+import equal from 'fast-deep-equal';
+import { memo } from 'react';
 import { CopyIcon, ThumbDownIcon, ThumbUpIcon } from './icons';
 import { Button } from './ui/button';
 import {
@@ -13,9 +21,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './ui/tooltip';
-import { memo } from 'react';
-import equal from 'fast-deep-equal';
 
+/**
+ * Renders interactive buttons for message actions like copy, upvote, and downvote.
+ * @param chatId - The chat identifier.
+ * @param message - The message object for which actions are provided.
+ * @param vote - Vote status associated with the message.
+ * @param isLoading - Indicates if the message is in a loading state.
+ * @returns Rendered message actions component.
+ * @see /src/lib/utils.ts
+ * @see /src/components/icons.ts
+ */
 export function PureMessageActions({
   chatId,
   message,
@@ -162,6 +178,10 @@ export function PureMessageActions({
   );
 }
 
+/**
+ * Memoized MessageActions component to optimize rendering of interactive message options.
+ * @returns Rendered memoized message actions component.
+ */
 export const MessageActions = memo(
   PureMessageActions,
   (prevProps, nextProps) => {

@@ -1,3 +1,9 @@
+/**
+ * Renders code blocks with distinct styles for inline and block code.
+ * @module components/code-block
+ * @packageDocumentation
+ */
+
 'use client';
 
 interface CodeBlockProps {
@@ -7,6 +13,15 @@ interface CodeBlockProps {
   children: any;
 }
 
+/**
+ * CodeBlock component that formats code snippets with appropriate styling.
+ * @param node - The code node data.
+ * @param inline - Boolean indicating if code is inline.
+ * @param className - CSS class names for the code.
+ * @param children - Code content.
+ * @returns A styled code element.
+ * @see /src/shared/types.ts
+ */
 export function CodeBlock({
   node,
   inline,

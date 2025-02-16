@@ -1,9 +1,14 @@
+/**
+ * Contains document tool components for handling document actions and results.
+ * @module components/document
+ * @packageDocumentation
+ */
 import { memo } from 'react';
 
+import { useArtifact } from '@/hooks/use-artifact';
+import { toast } from 'sonner';
 import type { ArtifactKind } from './artifact';
 import { FileIcon, LoaderIcon, MessageIcon, PencilEditIcon } from './icons';
-import { toast } from 'sonner';
-import { useArtifact } from '@/hooks/use-artifact';
 
 const getActionText = (
   type: 'create' | 'update' | 'request-suggestions',
@@ -29,6 +34,14 @@ interface DocumentToolResultProps {
   isReadonly: boolean;
 }
 
+/**
+ * Renders a document tool result button.
+ * @param type - The action type (create, update, request-suggestions).
+ * @param result - Object containing document id, title, and kind.
+ * @param isReadonly - Indicates if the document is readonly.
+ * @returns A button element that activates the document tool.
+ * @see /components/artifact.ts
+ */
 function PureDocumentToolResult({
   type,
   result,
@@ -92,6 +105,14 @@ interface DocumentToolCallProps {
   isReadonly: boolean;
 }
 
+/**
+ * Renders a document tool call button.
+ * @param type - The action type (create, update, request-suggestions).
+ * @param args - Object containing title.
+ * @param isReadonly - Indicates if the document is readonly.
+ * @returns A button element to call the document tool.
+ * @see /components/artifact.ts
+ */
 function PureDocumentToolCall({
   type,
   args,

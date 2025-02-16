@@ -1,7 +1,21 @@
+/**
+ * A styled textarea component for user input.
+ * @module ui/textarea
+ * @packageDocumentation
+ */
+
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+/**
+ * A responsive and accessible textarea component.
+ * @param props - Props forwarded to the textarea element.
+ * @returns Rendered textarea element.
+ * @see /components/ui/textarea.tsx
+ * @example
+ * <Textarea placeholder="Enter text..." />
+ */
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentProps<'textarea'>
@@ -20,3 +34,4 @@ const Textarea = React.forwardRef<
 Textarea.displayName = 'Textarea';
 
 export { Textarea };
+

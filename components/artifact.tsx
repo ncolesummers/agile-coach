@@ -1,3 +1,16 @@
+/**
+ * Displays AI-generated artifact data with message thread and version management.
+ * @module components/artifact
+ * @packageDocumentation
+ */
+
+import { codeArtifact } from '@/artifacts/code/client';
+import { imageArtifact } from '@/artifacts/image/client';
+import { sheetArtifact } from '@/artifacts/sheet/client';
+import { textArtifact } from '@/artifacts/text/client';
+import { useArtifact } from '@/hooks/use-artifact';
+import type { Document, Vote } from '@/lib/db/schema';
+import { fetcher } from '@/lib/utils';
 import type {
   Attachment,
   ChatRequestOptions,
@@ -5,6 +18,7 @@ import type {
   Message,
 } from 'ai';
 import { formatDistance } from 'date-fns';
+import equal from 'fast-deep-equal';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   type Dispatch,
@@ -16,22 +30,23 @@ import {
 } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useDebounceCallback, useWindowSize } from 'usehooks-ts';
-import type { Document, Vote } from '@/lib/db/schema';
-import { fetcher } from '@/lib/utils';
-import { MultimodalInput } from './multimodal-input';
-import { Toolbar } from './toolbar';
-import { VersionFooter } from './version-footer';
 import { ArtifactActions } from './artifact-actions';
 import { ArtifactCloseButton } from './artifact-close-button';
 import { ArtifactMessages } from './artifact-messages';
+import { MultimodalInput } from './multimodal-input';
+import { Toolbar } from './toolbar';
 import { useSidebar } from './ui/sidebar';
-import { useArtifact } from '@/hooks/use-artifact';
-import { imageArtifact } from '@/artifacts/image/client';
-import { codeArtifact } from '@/artifacts/code/client';
-import { sheetArtifact } from '@/artifacts/sheet/client';
-import { textArtifact } from '@/artifacts/text/client';
-import equal from 'fast-deep-equal';
+import { VersionFooter } from './version-footer';
 
+/**
+ * List of all available artifact definitions used by the Agile Coach.
+ * @see /artifacts/code/client.ts
+ * @see /artifacts/image/client.ts
+ * @see /artifacts/sheet/client.ts
+ * @see /artifacts/text/client.ts
+ * @example
+ * console.log(artifactDefinitions);
+ */
 export const artifactDefinitions = [
   textArtifact,
   codeArtifact,
@@ -40,6 +55,12 @@ export const artifactDefinitions = [
 ];
 export type ArtifactKind = (typeof artifactDefinitions)[number]['kind'];
 
+/**
+ * Represents UI properties of an artifact displayed in the interface.
+ * @see /lib/db/schema
+ * @example
+ * const uiArtifact: UIArtifact = { title: 'My Artifact', documentId: '1', kind: 'text', content: '', isVisible: true, status: 'idle', boundingBox: { top:0, left:0, width:100, height:100 } };
+ */
 export interface UIArtifact {
   title: string;
   documentId: string;
@@ -201,12 +222,23 @@ function PureArtifact({
     [document, debouncedHandleContentChange, handleContentChange],
   );
 
+  /**
+   * Retrieves the content of a document given its index.
+   * @param index - Index of the document within the documents array.
+   * @returns Content string if found; otherwise, an empty string.
+   */
   function getDocumentContentById(index: number) {
     if (!documents) return '';
     if (!documents[index]) return '';
     return documents[index].content ?? '';
   }
 
+  /**
+   * Adjusts the current document version based on the given action type.
+   * @param type - Navigation action: 'next', 'prev', 'toggle', or 'latest'.
+   * @example
+   * handleVersionChange('next');
+   */
   const handleVersionChange = (type: 'next' | 'prev' | 'toggle' | 'latest') => {
     if (!documents) return;
 
@@ -511,6 +543,27 @@ function PureArtifact({
   );
 }
 
+/**
+ * Renders the artifact modal with dynamic content, message thread, and version management.
+ * @param chatId - Unique identifier for the chat session.
+ * @param input - Current input value.
+ * @param setInput - Function to update the input.
+ * @param handleSubmit - Handler for submitting a new message.
+ * @param isLoading - Flag indicating an ongoing operation.
+ * @param stop - Function to halt an active process.
+ * @param attachments - List of attachments associated with the artifact.
+ * @param setAttachments - Function to update attachments.
+ * @param append - Function to append a new message to the thread.
+ * @param messages - Array of chat messages.
+ * @param setMessages - Function to update the messages.
+ * @param reload - Function to reload artifact data.
+ * @param votes - Array of votes associated with messages.
+ * @param isReadonly - Flag indicating if the artifact is read-only.
+ * @returns JSX element rendering the artifact interface.
+ * @throws Error when artifact definition is not found.
+ * @example
+ * <Artifact chatId="123" input="" setInput={setInput} handleSubmit={handleSubmit} ... />
+ */
 export const Artifact = memo(PureArtifact, (prevProps, nextProps) => {
   if (prevProps.isLoading !== nextProps.isLoading) return false;
   if (!equal(prevProps.votes, nextProps.votes)) return false;

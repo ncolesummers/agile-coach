@@ -1,8 +1,23 @@
+/**
+ * AuthForm component renders an authentication form for user login.
+ * @module components/auth-form
+ * @packageDocumentation
+ */
+
 import Form from 'next/form';
 
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 
+/**
+ * Renders form elements for authentication.
+ * @param action - The form action handler.
+ * @param children - The child elements to be rendered inside the form.
+ * @param defaultEmail - Default email to pre-populate the email field.
+ * @returns JSX element representing the auth form.
+ * @see /components/ui/input.tsx
+ * @see /components/ui/label.tsx
+ */
 export function AuthForm({
   action,
   children,

@@ -1,15 +1,21 @@
+/**
+ * Provides a diff view for displaying changes between two markdown texts.
+ * @module components/diffview
+ * @packageDocumentation
+ */
+
 import OrderedMap from 'orderedmap';
 import {
-  Schema,
-  type Node as ProsemirrorNode,
-  type MarkSpec,
   DOMParser,
+  Schema,
+  type MarkSpec,
+  type Node as ProsemirrorNode,
 } from 'prosemirror-model';
 import { schema } from 'prosemirror-schema-basic';
 import { addListNodes } from 'prosemirror-schema-list';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { renderToString } from 'react-dom/server';
 import ReactMarkdown from 'react-markdown';
 
@@ -42,6 +48,13 @@ const diffSchema = new Schema({
   }),
 });
 
+/**
+ * Computes the difference between two ProseMirror documents.
+ * @param oldDoc - The original ProseMirror document.
+ * @param newDoc - The updated ProseMirror document.
+ * @returns A diffed ProseMirror document.
+ * @see /src/lib/editor/diff
+ */
 function computeDiff(oldDoc: ProsemirrorNode, newDoc: ProsemirrorNode) {
   return diffEditor(diffSchema, oldDoc.toJSON(), newDoc.toJSON());
 }
@@ -51,6 +64,13 @@ type DiffEditorProps = {
   newContent: string;
 };
 
+/**
+ * React component that renders a diff view of the provided markdown contents.
+ * @param oldContent - The original markdown content.
+ * @param newContent - The updated markdown content.
+ * @returns A rendered diff view component.
+ * @see /src/lib/editor/diff
+ */
 export const DiffView = ({ oldContent, newContent }: DiffEditorProps) => {
   const editorRef = useRef<HTMLDivElement>(null);
   const viewRef = useRef<EditorView | null>(null);

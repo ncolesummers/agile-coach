@@ -1,41 +1,47 @@
+/**
+ * Provides a toolbar with tool selections and interactions for artifact manipulation.
+ * @module Toolbar
+ * @packageDocumentation
+ */
+
 'use client';
 
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { sanitizeUIMessages } from '@/lib/utils';
 import type { ChatRequestOptions, CreateMessage, Message } from 'ai';
 import cx from 'classnames';
 import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useTransform,
+    AnimatePresence,
+    motion,
+    useMotionValue,
+    useTransform,
 } from 'framer-motion';
-import {
-  type Dispatch,
-  memo,
-  type ReactNode,
-  type SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
-import { useOnClickOutside } from 'usehooks-ts';
 import { nanoid } from 'nanoid';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { sanitizeUIMessages } from '@/lib/utils';
+    type Dispatch,
+    memo,
+    type ReactNode,
+    type SetStateAction,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
+import { useOnClickOutside } from 'usehooks-ts';
 
-import {
-  ArrowUpIcon,
-  StopIcon,
-  SummarizeIcon,
-} from './icons';
-import { artifactDefinitions } from './artifact';
-import type { ArtifactKind } from './artifact';
-import type { ArtifactToolbarItem } from './create-artifact';
 import type { UseChatHelpers } from 'ai/react';
+import type { ArtifactKind } from './artifact';
+import { artifactDefinitions } from './artifact';
+import type { ArtifactToolbarItem } from './create-artifact';
+import {
+    ArrowUpIcon,
+    StopIcon,
+    SummarizeIcon,
+} from './icons';
 
 type ToolProps = {
   description: string;
@@ -470,6 +476,20 @@ const PureToolbar = ({
   );
 };
 
+/**
+ * Memoized toolbar component that renders based on loading and tool selection states.
+ * @param isToolbarVisible - Flag indicating if the toolbar should be visible.
+ * @param setIsToolbarVisible - Function to update toolbar visibility.
+ * @param append - Function to append a new message.
+ * @param isLoading - Flag to indicate loading state.
+ * @param stop - Function to stop the current action.
+ * @param setMessages - Function to update the message list.
+ * @param artifactKind - Type of artifact for which toolbar actions are rendered.
+ * @returns A JSX element representing the toolbar.
+ * @throws Error when no artifact definition is found.
+ * @see /components/artifact
+ * @see /components/icons
+ */
 export const Toolbar = memo(PureToolbar, (prevProps, nextProps) => {
   if (prevProps.isLoading !== nextProps.isLoading) return false;
   if (prevProps.isToolbarVisible !== nextProps.isToolbarVisible) return false;

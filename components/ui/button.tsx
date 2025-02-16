@@ -1,6 +1,12 @@
-import * as React from 'react';
+/**
+ * Provides a customizable Button component.
+ * @module ui/button
+ * @packageDocumentation
+ */
+
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -39,6 +45,12 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
+/**
+ * Button renders an interactive button element.
+ * @param props - The button properties including variant and size.
+ * @returns The button element.
+ * @see /components/ui/button.tsx
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
@@ -54,3 +66,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export { Button, buttonVariants };
+

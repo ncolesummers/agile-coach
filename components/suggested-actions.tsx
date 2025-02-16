@@ -1,9 +1,14 @@
+/**
+ * Component for displaying suggested actions in a chat interface.
+ * @module SuggestedActions
+ * @packageDocumentation
+ */
 'use client';
 
-import { motion } from 'framer-motion';
-import { Button } from './ui/button';
 import type { ChatRequestOptions, CreateMessage, Message } from 'ai';
+import { motion } from 'framer-motion';
 import { memo } from 'react';
+import { Button } from './ui/button';
 
 interface SuggestedActionsProps {
   chatId: string;
@@ -13,6 +18,13 @@ interface SuggestedActionsProps {
   ) => Promise<string | null | undefined>;
 }
 
+/**
+ * Render the suggested actions and invoke the append callback when an action is selected.
+ * @param {string} chatId - Identifier of the current chat.
+ * @param {function} append - Callback to update the chat with a new message.
+ * @returns JSX element displaying action buttons.
+ * @see /src/shared/types.ts
+ */
 function PureSuggestedActions({ chatId, append }: SuggestedActionsProps) {
   const suggestedActions = [
     {

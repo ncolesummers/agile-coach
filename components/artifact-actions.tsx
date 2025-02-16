@@ -1,10 +1,16 @@
+/**
+ * ArtifactActions component provides various artifact operations as action buttons.
+ * @module components/artifact-actions
+ * @packageDocumentation
+ */
+
+import { cn } from '@/lib/utils';
+import { type Dispatch, memo, type SetStateAction, useState } from 'react';
+import { toast } from 'sonner';
+import { artifactDefinitions, type UIArtifact } from './artifact';
+import type { ArtifactActionContext } from './create-artifact';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { artifactDefinitions, type UIArtifact } from './artifact';
-import { type Dispatch, memo, type SetStateAction, useState } from 'react';
-import type { ArtifactActionContext } from './create-artifact';
-import { cn } from '@/lib/utils';
-import { toast } from 'sonner';
 
 interface ArtifactActionsProps {
   artifact: UIArtifact;
@@ -16,6 +22,19 @@ interface ArtifactActionsProps {
   setMetadata: Dispatch<SetStateAction<any>>;
 }
 
+/**
+ * Renders action buttons for the artifact.
+ * @param artifact - The UI artifact to interact with.
+ * @param handleVersionChange - Function to change artifact version.
+ * @param currentVersionIndex - Index of the current document version.
+ * @param isCurrentVersion - Indicates if the displayed version is the most recent.
+ * @param mode - Current mode (edit or diff).
+ * @param metadata - Additional metadata for the artifact.
+ * @param setMetadata - Function to update metadata.
+ * @returns JSX element containing artifact action buttons.
+ * @see /components/artifact.tsx
+ * @see /components/create-artifact.tsx
+ */
 function PureArtifactActions({
   artifact,
   handleVersionChange,

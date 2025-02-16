@@ -1,8 +1,19 @@
+/**
+ * ArtifactCloseButton component closes the artifact modal.
+ * @module components/artifact-close-button
+ * @packageDocumentation
+ */
+
+import { initialArtifactData, useArtifact } from '@/hooks/use-artifact';
 import { memo } from 'react';
 import { CrossIcon } from './icons';
 import { Button } from './ui/button';
-import { initialArtifactData, useArtifact } from '@/hooks/use-artifact';
 
+/**
+ * Renders a button to close the artifact modal.
+ * @returns JSX element representing the close button.
+ * @see /hooks/use-artifact.ts
+ */
 function PureArtifactCloseButton() {
   const { setArtifact } = useArtifact();
 

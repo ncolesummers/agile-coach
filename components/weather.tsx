@@ -1,3 +1,9 @@
+/**
+ * Displays weather details including current temperature and upcoming forecast.
+ * @module Weather
+ * @packageDocumentation
+ */
+
 'use client';
 
 import cx from 'classnames';
@@ -201,6 +207,12 @@ function n(num: number): number {
   return Math.ceil(num);
 }
 
+/**
+ * Renders the weather component using provided or sample data.
+ * @param weatherAtLocation - Object containing weather information.
+ * @returns A JSX element displaying weather details.
+ * @see /components/weather.tsx
+ */
 export function Weather({
   weatherAtLocation = SAMPLE,
 }: {

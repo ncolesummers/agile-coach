@@ -1,5 +1,10 @@
-import { LoaderIcon } from './icons';
+/**
+ * Provides image editing functionality.
+ * @module components/image-editor
+ * @packageDocumentation
+ */
 import cn from 'classnames';
+import { LoaderIcon } from './icons';
 
 interface ImageEditorProps {
   title: string;

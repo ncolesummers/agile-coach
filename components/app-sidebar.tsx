@@ -1,3 +1,9 @@
+/**
+ * AppSidebar component renders the sidebar for navigation and chat history.
+ * @module components/app-sidebar
+ * @packageDocumentation
+ */
+
 'use client';
 
 import type { User } from 'next-auth';
@@ -18,6 +24,13 @@ import {
 import Link from 'next/link';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
+/**
+ * Renders the application's sidebar including navigation and user options.
+ * @param user - The currently authenticated user.
+ * @returns JSX element representing the sidebar.
+ * @see /components/sidebar-history.tsx
+ * @see /components/sidebar-user-nav.tsx
+ */
 export function AppSidebar({ user }: { user: User | undefined }) {
   const router = useRouter();
   const { setOpenMobile } = useSidebar();

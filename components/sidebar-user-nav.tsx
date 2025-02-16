@@ -1,9 +1,9 @@
 'use client';
 import { ChevronUp } from 'lucide-react';
-import Image from 'next/image';
 import type { User } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 
 import {
   DropdownMenu,
@@ -18,6 +18,18 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 
+/**
+ * User navigation component in the sidebar including theme toggle and sign out.
+ * @module SidebarUserNav
+ * @packageDocumentation
+ */
+
+/**
+ * Renders the user info with avatar and dropdown options.
+ * @param user - The authenticated user object.
+ * @returns JSX element for the sidebar user navigation.
+ * @see /src/shared/types.ts
+ */
 export function SidebarUserNav({ user }: { user: User }) {
   const { setTheme, theme } = useTheme();
 

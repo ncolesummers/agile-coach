@@ -1,10 +1,16 @@
+/**
+ * Handles incoming data stream deltas and updates artifact state accordingly.
+ * @module components/data-stream-handler
+ * @packageDocumentation
+ */
+
 'use client';
 
+import { initialArtifactData, useArtifact } from '@/hooks/use-artifact';
+import type { Suggestion } from '@/lib/db/schema';
 import { useChat } from 'ai/react';
 import { useEffect, useRef } from 'react';
 import { artifactDefinitions, type ArtifactKind } from './artifact';
-import type { Suggestion } from '@/lib/db/schema';
-import { initialArtifactData, useArtifact } from '@/hooks/use-artifact';
 
 export type DataStreamDelta = {
   type:
@@ -21,6 +27,12 @@ export type DataStreamDelta = {
   content: string | Suggestion;
 };
 
+/**
+ * Processes data stream delta updates to modify artifact data.
+ * @param id - Identifier representing the data stream.
+ * @returns Null component as this handler works through side effects.
+ * @see /src/hooks/use-artifact
+ */
 export function DataStreamHandler({ id }: { id: string }) {
   const { data: dataStream } = useChat({ id });
   const { artifact, setArtifact, setMetadata } = useArtifact();

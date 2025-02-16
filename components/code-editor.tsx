@@ -1,12 +1,18 @@
+/**
+ * Implements a CodeEditor component using CodeMirror for syntax highlighting.
+ * @module components/code-editor
+ * @packageDocumentation
+ */
+
 'use client';
 
-import { EditorView } from '@codemirror/view';
-import { EditorState, Transaction } from '@codemirror/state';
-import { python } from '@codemirror/lang-python';
-import { oneDark } from '@codemirror/theme-one-dark';
-import { basicSetup } from 'codemirror';
-import React, { memo, useEffect, useRef } from 'react';
 import type { Suggestion } from '@/lib/db/schema';
+import { python } from '@codemirror/lang-python';
+import { EditorState, Transaction } from '@codemirror/state';
+import { oneDark } from '@codemirror/theme-one-dark';
+import { EditorView } from '@codemirror/view';
+import { basicSetup } from 'codemirror';
+import { memo, useEffect, useRef } from 'react';
 
 type EditorProps = {
   content: string;
@@ -110,4 +116,15 @@ function areEqual(prevProps: EditorProps, nextProps: EditorProps) {
   return true;
 }
 
+/**
+ * CodeEditor component that provides a rich code editing interface.
+ * @param content - The code content to display.
+ * @param onSaveContent - Function to call when the content changes.
+ * @param status - Indicates if the editor is streaming or idle.
+ * @param isCurrentVersion - Indicates if the current version is active.
+ * @param currentVersionIndex - Index of the current version.
+ * @param suggestions - List of code suggestions.
+ * @returns A memoized React component for editing code.
+ * @see /src/lib/db/schema
+ */
 export const CodeEditor = memo(PureCodeEditor, areEqual);

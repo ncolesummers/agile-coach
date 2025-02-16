@@ -1,3 +1,10 @@
+/**
+ * Multimodal Input Component
+ * Manages text input with file attachments for chat messages.
+ * @module multimodal-input
+ * @packageDocumentation
+ */
+
 'use client';
 
 import type {
@@ -9,26 +16,26 @@ import type {
 import cx from 'classnames';
 import type React from 'react';
 import {
-  useRef,
-  useEffect,
-  useState,
+  memo,
   useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
   type Dispatch,
   type SetStateAction,
-  type ChangeEvent,
-  memo,
 } from 'react';
 import { toast } from 'sonner';
 import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 
 import { sanitizeUIMessages } from '@/lib/utils';
 
+import equal from 'fast-deep-equal';
 import { ArrowUpIcon, PaperclipIcon, StopIcon } from './icons';
 import { PreviewAttachment } from './preview-attachment';
+import { SuggestedActions } from './suggested-actions';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
-import { SuggestedActions } from './suggested-actions';
-import equal from 'fast-deep-equal';
 
 function PureMultimodalInput({
   chatId,
@@ -273,6 +280,28 @@ function PureMultimodalInput({
   );
 }
 
+/**
+ * Renders a multimodal input enabling text and file attachment submissions.
+ *
+ * @param props - Includes chatId, text input state, loading flag, attachments, and callbacks.
+ * @returns A memoized multimodal input component.
+ * @throws Will throw an error if file upload fails.
+ * @example
+ * <MultimodalInput
+ *    chatId="123"
+ *    input={message}
+ *    setInput={setMessage}
+ *    isLoading={false}
+ *    stop={handleStop}
+ *    attachments={[]}
+ *    setAttachments={setAttachments}
+ *    messages={[]}
+ *    setMessages={setMessages}
+ *    append={appendMessage}
+ *    handleSubmit={handleSubmit}
+ * />
+ * @see /src/shared/types.ts
+ */
 export const MultimodalInput = memo(
   PureMultimodalInput,
   (prevProps, nextProps) => {

@@ -1,7 +1,18 @@
+/**
+ * Provides placeholder skeletons for document components.
+ * @module components/document-skeleton
+ * @packageDocumentation
+ */
 'use client';
 
 import type { ArtifactKind } from './artifact';
 
+/**
+ * Renders a skeleton loader based on the artifact kind.
+ * @param artifactKind - The type of artifact (image or text).
+ * @returns A skeleton loader component for document preview.
+ * @see /components/artifact.ts
+ */
 export const DocumentSkeleton = ({
   artifactKind,
 }: {
@@ -24,6 +35,11 @@ export const DocumentSkeleton = ({
   );
 };
 
+/**
+ * Renders an inline document skeleton loader.
+ * @returns A simplified inline skeleton loader.
+ * @see /components/document-skeleton.tsx
+ */
 export const InlineDocumentSkeleton = () => {
   return (
     <div className="flex flex-col gap-4 w-full">

@@ -1,3 +1,9 @@
+/**
+ * Chat component handling chat interactions using the AI SDK.
+ * @module components/chat
+ * @packageDocumentation
+ */
+
 'use client';
 
 import type { Attachment, Message } from 'ai';
@@ -9,13 +15,24 @@ import { ChatHeader } from '@/components/chat-header';
 import type { Vote } from '@/lib/db/schema';
 import { fetcher, generateUUID } from '@/lib/utils';
 
-import { Artifact } from './artifact';
-import { MultimodalInput } from './multimodal-input';
-import { Messages } from './messages';
-import type { VisibilityType } from './visibility-selector';
 import { useArtifactSelector } from '@/hooks/use-artifact';
 import { toast } from 'sonner';
+import { Artifact } from './artifact';
+import { Messages } from './messages';
+import { MultimodalInput } from './multimodal-input';
+import type { VisibilityType } from './visibility-selector';
 
+/**
+ * Renders the chat interface.
+ * @param id - Unique identifier for the chat session.
+ * @param initialMessages - List of initial messages.
+ * @param selectedChatModel - Identifier for the selected chat model.
+ * @param selectedVisibilityType - The visibility setting.
+ * @param isReadonly - Indicates whether the chat is in read-only mode.
+ * @returns JSX element representing the chat UI.
+ * @see /components/chat-header.tsx
+ * @see /components/multimodal-input.tsx
+ */
 export function Chat({
   id,
   initialMessages,

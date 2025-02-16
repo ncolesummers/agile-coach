@@ -1,7 +1,25 @@
+/**
+ * Preview Attachment Component
+ * Displays an attachment preview with optional loading state.
+ * @module preview-attachment
+ * @packageDocumentation
+ */
+
 import type { Attachment } from 'ai';
 
 import { LoaderIcon } from './icons';
 
+/**
+ * Renders a preview of an attachment.
+ *
+ * @param attachment - Attachment object containing name, url, and contentType.
+ * @param isUploading - Flag indicating if the attachment is being uploaded.
+ * @returns JSX element showing the preview.
+ * @throws Will show an error if attachment preview fails to load.
+ * @example
+ * <PreviewAttachment attachment={attachmentObj} isUploading={false} />
+ * @see /src/shared/types.ts
+ */
 export const PreviewAttachment = ({
   attachment,
   isUploading = false,

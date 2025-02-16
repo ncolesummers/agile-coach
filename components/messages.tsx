@@ -1,10 +1,16 @@
-import type { ChatRequestOptions, Message } from 'ai';
-import { PreviewMessage, ThinkingMessage } from './message';
-import { useScrollToBottom } from './use-scroll-to-bottom';
-import { Overview } from './overview';
-import { memo } from 'react';
+/**
+ * Renders a list of chat messages with scroll management and overview fallback.
+ * @module messages
+ * @packageDocumentation
+ */
+
 import type { Vote } from '@/lib/db/schema';
+import type { ChatRequestOptions, Message } from 'ai';
 import equal from 'fast-deep-equal';
+import { memo } from 'react';
+import { PreviewMessage, ThinkingMessage } from './message';
+import { Overview } from './overview';
+import { useScrollToBottom } from './use-scroll-to-bottom';
 
 interface MessagesProps {
   chatId: string;
@@ -69,6 +75,12 @@ function PureMessages({
   );
 }
 
+/**
+ * Memoized Messages component that minimizes unnecessary re-renders.
+ * @returns Rendered Messages component.
+ * @see /src/hooks/use-scroll-to-bottom
+ * @see /src/components/overview.tsx
+ */
 export const Messages = memo(PureMessages, (prevProps, nextProps) => {
   if (prevProps.isArtifactVisible && nextProps.isArtifactVisible) return true;
 

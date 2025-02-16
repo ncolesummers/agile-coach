@@ -1,3 +1,8 @@
+/**
+ * Button to toggle sidebar visibility.
+ * @module SidebarToggle
+ * @packageDocumentation
+ */
 import type { ComponentProps } from 'react';
 
 import { type SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
@@ -10,6 +15,12 @@ import {
 import { SidebarLeftIcon } from './icons';
 import { Button } from './ui/button';
 
+/**
+ * Handles the sidebar toggle action.
+ * @param className - Additional class names to style the button.
+ * @returns JSX element for the toggle button.
+ * @see /src/shared/types.ts
+ */
 export function SidebarToggle({
   className,
 }: ComponentProps<typeof SidebarTrigger>) {

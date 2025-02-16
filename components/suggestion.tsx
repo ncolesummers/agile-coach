@@ -1,3 +1,9 @@
+/**
+ * Renders an expandable suggestion bubble for applying content modifications.
+ * @module Suggestion
+ * @packageDocumentation
+ */
+
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -6,11 +12,20 @@ import { useWindowSize } from 'usehooks-ts';
 
 import type { UISuggestion } from '@/lib/editor/suggestions';
 
-import { CrossIcon, MessageIcon } from './icons';
-import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import type { ArtifactKind } from './artifact';
+import { CrossIcon, MessageIcon } from './icons';
+import { Button } from './ui/button';
 
+/**
+ * Renders a suggestion item with an option to apply the suggestion.
+ * @param suggestion - The suggestion data containing description and id.
+ * @param onApply - Callback to apply the suggestion.
+ * @param artifactKind - Type of artifact (e.g. 'text' or 'code') for styling purposes.
+ * @returns A JSX element displaying the suggestion.
+ * @see /components/icons
+ * @see /components/ui/button
+ */
 export const Suggestion = ({
   suggestion,
   onApply,

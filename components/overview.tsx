@@ -1,8 +1,23 @@
+/**
+ * Overview Component
+ * Displays a high-level overview with links and icons.
+ * @module overview
+ * @packageDocumentation
+ */
+
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
 import { MessageIcon, VercelIcon } from './icons';
 
+/**
+ * Renders the overview section with animated entrance.
+ *
+ * @returns JSX element with overview content.
+ * @example
+ * <Overview />
+ * @see /src/shared/types.ts
+ */
 export const Overview = () => {
   return (
     <motion.div

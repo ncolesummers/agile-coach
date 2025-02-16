@@ -1,9 +1,26 @@
+/**
+ * Defines artifact configuration types and exports the Artifact class.
+ * @module components/create-artifact
+ * @packageDocumentation
+ */
+
 import type { Suggestion } from '@/lib/db/schema';
 import type { UseChatHelpers } from 'ai/react';
 import type { ComponentType, Dispatch, ReactNode, SetStateAction } from 'react';
-import type { DataStreamDelta } from './data-stream-handler';
 import type { UIArtifact } from './artifact';
+import type { DataStreamDelta } from './data-stream-handler';
 
+/**
+ * Context for artifact actions.
+ * @property content - The current content.
+ * @property handleVersionChange - Function to change artifact version.
+ * @property currentVersionIndex - The index of the current version.
+ * @property isCurrentVersion - Boolean indicating if version is current.
+ * @property mode - Mode of the artifact ('edit' or 'diff').
+ * @property metadata - Additional metadata.
+ * @property setMetadata - Function to update metadata.
+ * @see /src/shared/types.ts
+ */
 export type ArtifactActionContext<M = any> = {
   content: string;
   handleVersionChange: (type: 'next' | 'prev' | 'toggle' | 'latest') => void;
@@ -14,6 +31,14 @@ export type ArtifactActionContext<M = any> = {
   setMetadata: Dispatch<SetStateAction<M>>;
 };
 
+/**
+ * Artifact action definition.
+ * @property icon - The icon representing the action.
+ * @property label - Optional label for the action.
+ * @property description - Description of what the action does.
+ * @property onClick - Click handler to execute the action.
+ * @property isDisabled - Optional function to determine if action is disabled.
+ */
 type ArtifactAction<M = any> = {
   icon: ReactNode;
   label?: string;
@@ -22,10 +47,20 @@ type ArtifactAction<M = any> = {
   isDisabled?: (context: ArtifactActionContext<M>) => boolean;
 };
 
+/**
+ * Context for toolbar actions.
+ * @property appendMessage - Function to append chat messages.
+ */
 export type ArtifactToolbarContext = {
   appendMessage: UseChatHelpers['append'];
 };
 
+/**
+ * Definition for items in the artifact toolbar.
+ * @property description - Description of the toolbar item.
+ * @property icon - Icon representing the item.
+ * @property onClick - Click handler for the toolbar item.
+ */
 export type ArtifactToolbarItem = {
   description: string;
   icon: ReactNode;
@@ -67,6 +102,11 @@ type ArtifactConfig<T extends string, M = any> = {
   }) => void;
 };
 
+/**
+ * Class representing an artifact with content, actions, and configuration.
+ * @example
+ * const artifact = new Artifact({ kind: 'note', description: 'Text note', content: NoteComponent, actions: [], toolbar: [], onStreamPart: handler });
+ */
 export class Artifact<T extends string, M = any> {
   readonly kind: T;
   readonly description: string;

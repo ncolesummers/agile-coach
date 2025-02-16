@@ -1,3 +1,10 @@
+/**
+ * Model Selector Component
+ * Allows the user to select a chat model from a dropdown.
+ * @module model-selector
+ * @packageDocumentation
+ */
+
 'use client';
 
 import { startTransition, useMemo, useOptimistic, useState } from 'react';
@@ -15,9 +22,20 @@ import { cn } from '@/lib/utils';
 
 import { CheckCircleFillIcon, ChevronDownIcon } from './icons';
 
+/**
+ * Renders a dropdown menu to select a chat model.
+ *
+ * @param props - selectedModelId: the currently selected model identifier, className: additional CSS classes.
+ * @returns A button that displays the current model and a dropdown to change it.
+ * @throws May throw an error if model selection fails.
+ * @example
+ * <ModelSelector selectedModelId="gpt-4" className="my-selector" />
+ * @see /src/models/chatModels.ts
+ */
 export function ModelSelector({
   selectedModelId,
   className,
+  ...rest
 }: {
   selectedModelId: string;
 } & React.ComponentProps<typeof Button>) {
@@ -39,7 +57,7 @@ export function ModelSelector({
           className,
         )}
       >
-        <Button variant="outline" className="md:px-2 md:h-[34px]">
+        <Button variant="outline" className="md:px-2 md:h-[34px]" {...rest}>
           {selectedChatModel?.name}
           <ChevronDownIcon />
         </Button>

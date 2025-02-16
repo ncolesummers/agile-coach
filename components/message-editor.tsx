@@ -1,11 +1,17 @@
+/**
+ * Provides a text editor interface for modifying an existing message.
+ * @module message-editor
+ * @packageDocumentation
+ */
+
 'use client';
 
+import { deleteTrailingMessages } from '@/app/(chat)/actions';
 import type { ChatRequestOptions, Message } from 'ai';
-import { Button } from './ui/button';
 import type { Dispatch, SetStateAction } from 'react';
 import { useEffect, useRef, useState } from 'react';
+import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
-import { deleteTrailingMessages } from '@/app/(chat)/actions';
 
 export type MessageEditorProps = {
   message: Message;
@@ -18,6 +24,15 @@ export type MessageEditorProps = {
   ) => Promise<string | null | undefined>;
 };
 
+/**
+ * Renders an editor for a chat message that supports auto-resizing and message updates.
+ * @param message - The message object to edit.
+ * @param setMode - Function to toggle view/edit mode.
+ * @param setMessages - Function to update the list of messages after editing.
+ * @param reload - Function to reload additional message data.
+ * @returns Rendered message editor component.
+ * @see /src/app/(chat)/actions.ts
+ */
 export function MessageEditor({
   message,
   setMode,

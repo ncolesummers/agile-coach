@@ -1,10 +1,16 @@
+/**
+ * Implements a rich text editor using ProseMirror and additional plugins.
+ * @module TextEditor
+ * @packageDocumentation
+ */
+
 'use client';
 
 import { exampleSetup } from 'prosemirror-example-setup';
 import { inputRules } from 'prosemirror-inputrules';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import React, { memo, useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 
 import type { Suggestion } from '@/lib/db/schema';
 import {
@@ -80,6 +86,7 @@ function PureEditor({
     if (editorRef.current) {
       editorRef.current.setProps({
         dispatchTransaction: (transaction) => {
+          // Handle transactions and save content
           handleTransaction({
             transaction,
             editorRef,
@@ -161,4 +168,16 @@ function areEqual(prevProps: EditorProps, nextProps: EditorProps) {
   );
 }
 
+/**
+ * Renders the text editor component.
+ * @param content - The content to be rendered in the editor.
+ * @param onSaveContent - Callback that saves updated content.
+ * @param status - Current streaming status ('streaming' or 'idle').
+ * @param isCurrentVersion - Flag indicating the current version.
+ * @param currentVersionIndex - Index of the current version.
+ * @param suggestions - Array of suggestion objects for content editing.
+ * @returns A JSX element containing the text editor.
+ * @see /lib/editor/config
+ * @see /lib/editor/functions
+ */
 export const Editor = memo(PureEditor, areEqual);

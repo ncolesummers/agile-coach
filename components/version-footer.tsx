@@ -1,3 +1,9 @@
+/**
+ * Displays a footer for version restoration with options to restore or revert.
+ * @module VersionFooter
+ * @packageDocumentation
+ */
+
 'use client';
 
 import { isAfter } from 'date-fns';
@@ -9,9 +15,9 @@ import { useWindowSize } from 'usehooks-ts';
 import type { Document } from '@/lib/db/schema';
 import { getDocumentTimestampByIndex } from '@/lib/utils';
 
+import { useArtifact } from '@/hooks/use-artifact';
 import { LoaderIcon } from './icons';
 import { Button } from './ui/button';
-import { useArtifact } from '@/hooks/use-artifact';
 
 interface VersionFooterProps {
   handleVersionChange: (type: 'next' | 'prev' | 'toggle' | 'latest') => void;
@@ -19,6 +25,15 @@ interface VersionFooterProps {
   currentVersionIndex: number;
 }
 
+/**
+ * Renders the version footer component to restore previous document versions.
+ * @param handleVersionChange - Callback for changing version.
+ * @param documents - An array of document versions.
+ * @param currentVersionIndex - Index of the current document version.
+ * @returns A JSX element containing version restoration controls.
+ * @see /lib/utils
+ * @see /hooks/use-artifact
+ */
 export const VersionFooter = ({
   handleVersionChange,
   documents,

@@ -1,8 +1,14 @@
+/**
+ * Provides an expandable view for detailed reasoning of a message.
+ * @module message-reasoning
+ * @packageDocumentation
+ */
+
 'use client';
 
+import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { ChevronDownIcon, LoaderIcon } from './icons';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Markdown } from './markdown';
 
 interface MessageReasoningProps {
@@ -10,6 +16,14 @@ interface MessageReasoningProps {
   reasoning: string;
 }
 
+/**
+ * Renders detailed reasoning with optional loading state and expand/collapse behavior.
+ * @param isLoading - Indicates if reasoning data is loading.
+ * @param reasoning - The reasoning text to display.
+ * @returns Rendered message reasoning component.
+ * @see /src/components/icons.ts
+ * @see /src/components/markdown.tsx
+ */
 export function MessageReasoning({
   isLoading,
   reasoning,

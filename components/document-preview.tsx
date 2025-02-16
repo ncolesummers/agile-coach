@@ -1,5 +1,13 @@
 'use client';
-
+/**
+ * Provides the document preview components including header, content, and hitbox layer.
+ * @module components/document-preview
+ * @packageDocumentation
+ */
+import { useArtifact } from '@/hooks/use-artifact';
+import type { Document } from '@/lib/db/schema';
+import { cn, fetcher } from '@/lib/utils';
+import equal from 'fast-deep-equal';
 import {
   memo,
   type MouseEvent,
@@ -8,19 +16,15 @@ import {
   useMemo,
   useRef,
 } from 'react';
-import type { ArtifactKind, UIArtifact } from './artifact';
-import { FileIcon, FullscreenIcon, ImageIcon, LoaderIcon } from './icons';
-import { cn, fetcher } from '@/lib/utils';
-import type { Document } from '@/lib/db/schema';
-import { InlineDocumentSkeleton } from './document-skeleton';
 import useSWR from 'swr';
-import { Editor } from './text-editor';
-import { DocumentToolCall, DocumentToolResult } from './document';
+import type { ArtifactKind, UIArtifact } from './artifact';
 import { CodeEditor } from './code-editor';
-import { useArtifact } from '@/hooks/use-artifact';
-import equal from 'fast-deep-equal';
-import { SpreadsheetEditor } from './sheet-editor';
+import { DocumentToolCall, DocumentToolResult } from './document';
+import { InlineDocumentSkeleton } from './document-skeleton';
+import { FileIcon, FullscreenIcon, ImageIcon, LoaderIcon } from './icons';
 import { ImageEditor } from './image-editor';
+import { SpreadsheetEditor } from './sheet-editor';
+import { Editor } from './text-editor';
 
 interface DocumentPreviewProps {
   isReadonly: boolean;
@@ -28,6 +32,15 @@ interface DocumentPreviewProps {
   args?: any;
 }
 
+/**
+ * Renders a document preview component.
+ * @param isReadonly - Indicates if the document is in readonly mode.
+ * @param result - The result object containing document details.
+ * @param args - Additional arguments for document preview.
+ * @returns The document preview element.
+ * @see /components/document.tsx
+ * @see /components/document-skeleton.tsx
+ */
 export function DocumentPreview({
   isReadonly,
   result,
@@ -141,6 +154,14 @@ const LoadingSkeleton = ({ artifactKind }: { artifactKind: ArtifactKind }) => (
   </div>
 );
 
+/**
+ * Renders an interactive layer that sets the artifact bounding box on click.
+ * @param hitboxRef - Reference to the hitbox DOM element.
+ * @param result - Associated document result data.
+ * @param setArtifact - Function to update the current artifact.
+ * @returns The hitbox layer element.
+ * @see /components/document-preview.tsx
+ */
 const PureHitboxLayer = ({
   hitboxRef,
   result,
@@ -199,6 +220,14 @@ const HitboxLayer = memo(PureHitboxLayer, (prevProps, nextProps) => {
   return true;
 });
 
+/**
+ * Renders the document header with title and loading state.
+ * @param title - The document title.
+ * @param kind - The artifact kind.
+ * @param isStreaming - Indicates if the document is currently streaming.
+ * @returns The document header element.
+ * @see /components/document.tsx
+ */
 const PureDocumentHeader = ({
   title,
   kind,
@@ -234,6 +263,15 @@ const DocumentHeader = memo(PureDocumentHeader, (prevProps, nextProps) => {
   return true;
 });
 
+/**
+ * Renders the document content based on its kind.
+ * @param document - The document object containing title, content, and kind.
+ * @returns The document content element.
+ * @see /components/text-editor.tsx
+ * @see /components/code-editor.tsx
+ * @see /components/sheet-editor.tsx
+ * @see /components/image-editor.tsx
+ */
 const DocumentContent = ({ document }: { document: Document }) => {
   const { artifact } = useArtifact();
 

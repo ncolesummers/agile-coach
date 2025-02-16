@@ -1,3 +1,9 @@
+/**
+ * Contains components to render individual messages and their interactive elements.
+ * @module message
+ * @packageDocumentation
+ */
+
 'use client';
 
 import type { ChatRequestOptions, Message } from 'ai';
@@ -7,22 +13,22 @@ import { memo, useState } from 'react';
 
 import type { Vote } from '@/lib/db/schema';
 
+import { cn } from '@/lib/utils';
+import equal from 'fast-deep-equal';
 import { DocumentToolCall, DocumentToolResult } from './document';
+import { DocumentPreview } from './document-preview';
 import {
   PencilEditIcon,
   SparklesIcon,
 } from './icons';
 import { Markdown } from './markdown';
 import { MessageActions } from './message-actions';
+import { MessageEditor } from './message-editor';
+import { MessageReasoning } from './message-reasoning';
 import { PreviewAttachment } from './preview-attachment';
-import { Weather } from './weather';
-import equal from 'fast-deep-equal';
-import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
-import { MessageEditor } from './message-editor';
-import { DocumentPreview } from './document-preview';
-import { MessageReasoning } from './message-reasoning';
+import { Weather } from './weather';
 
 const PurePreviewMessage = ({
   chatId,
@@ -216,6 +222,11 @@ const PurePreviewMessage = ({
   );
 };
 
+/**
+ * Renders a preview of a chat message with support for attachments and editing.
+ * @returns Rendered preview message.
+ * @see /src/components/message-editor.tsx
+ */
 export const PreviewMessage = memo(
   PurePreviewMessage,
   (prevProps, nextProps) => {
@@ -236,6 +247,11 @@ export const PreviewMessage = memo(
   },
 );
 
+/**
+ * Renders an animated placeholder for a message in loading state.
+ * @returns Rendered thinking message component.
+ * @see /src/components/icons.ts
+ */
 export const ThinkingMessage = () => {
   const role = 'assistant';
 

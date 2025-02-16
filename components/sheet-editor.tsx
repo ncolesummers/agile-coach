@@ -1,10 +1,17 @@
+/**
+ * Sheet Editor Component
+ * Provides a spreadsheet-like editor for CSV content.
+ * @module sheet-editor
+ * @packageDocumentation
+ */
+
 'use client';
 
-import React, { memo, useEffect, useMemo, useState } from 'react';
-import DataGrid, { textEditor } from 'react-data-grid';
-import { parse, unparse } from 'papaparse';
-import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
+import { useTheme } from 'next-themes';
+import { parse, unparse } from 'papaparse';
+import { memo, useEffect, useMemo, useState } from 'react';
+import DataGrid, { textEditor } from 'react-data-grid';
 
 import 'react-data-grid/lib/styles.css';
 
@@ -130,6 +137,18 @@ const PureSpreadsheetEditor = ({
   );
 };
 
+/**
+ * Renders the spreadsheet editor which allows editing CSV content.
+ *
+ * @param props - Includes content, saveContent callback, status, and versioning flags.
+ * @returns A memoized spreadsheet editor component.
+ * @see /src/shared/types.ts
+ * @see /src/models/user.ts
+ * @example
+ * <SpreadsheetEditor content={csvData} saveContent={handleSave} status="ready" isCurrentVersion currentVersionIndex={0} />
+ */
+export const SpreadsheetEditor = memo(PureSpreadsheetEditor, areEqual);
+
 function areEqual(prevProps: SheetEditorProps, nextProps: SheetEditorProps) {
   return (
     prevProps.currentVersionIndex === nextProps.currentVersionIndex &&
@@ -139,5 +158,3 @@ function areEqual(prevProps: SheetEditorProps, nextProps: SheetEditorProps) {
     prevProps.saveContent === nextProps.saveContent
   );
 }
-
-export const SpreadsheetEditor = memo(PureSpreadsheetEditor, areEqual);

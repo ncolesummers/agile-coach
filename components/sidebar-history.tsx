@@ -1,9 +1,14 @@
+/**
+ * Sidebar history module displaying previous chat sessions.
+ * @module SidebarHistory
+ * @packageDocumentation
+ */
 'use client';
 
 import { isToday, isYesterday, subMonths, subWeeks } from 'date-fns';
+import type { User } from 'next-auth';
 import Link from 'next/link';
 import { useParams, usePathname, useRouter } from 'next/navigation';
-import type { User } from 'next-auth';
 import { memo, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import useSWR from 'swr';
@@ -45,9 +50,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { useChatVisibility } from '@/hooks/use-chat-visibility';
 import type { Chat } from '@/lib/db/schema';
 import { fetcher } from '@/lib/utils';
-import { useChatVisibility } from '@/hooks/use-chat-visibility';
 
 type GroupedChats = {
   today: Chat[];
@@ -57,6 +62,15 @@ type GroupedChats = {
   older: Chat[];
 };
 
+/**
+ * Renders a chat item with actions like share and delete.
+ * @param chat - Object representing the chat details.
+ * @param isActive - Flag indicating if the chat is currently active.
+ * @param onDelete - Callback function to delete the chat.
+ * @param setOpenMobile - Callback to control mobile sidebar visibility.
+ * @returns JSX element representing a single chat item.
+ * @see /src/lib/db/schema.ts
+ */
 const PureChatItem = ({
   chat,
   isActive,
@@ -148,6 +162,13 @@ export const ChatItem = memo(PureChatItem, (prevProps, nextProps) => {
   return true;
 });
 
+/**
+ * Displays the chat history grouped by date categories with delete functionality.
+ * @param user - The current authenticated user or undefined.
+ * @returns JSX element rendering chat history panels or prompts for login.
+ * @see /src/lib/utils.ts
+ * @see /src/hooks/use-chat-visibility.ts
+ */
 export function SidebarHistory({ user }: { user: User | undefined }) {
   const { setOpenMobile } = useSidebar();
   const { id } = useParams();

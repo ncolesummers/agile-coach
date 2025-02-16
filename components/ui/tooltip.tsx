@@ -1,16 +1,43 @@
+/**
+ * Tooltip components for enhanced UI interactions.
+ * @module ui/tooltip
+ * @packageDocumentation
+ */
+
 'use client';
 
-import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+/**
+ * Provides the context for tooltip elements.
+ * @returns TooltipProvider element.
+ * @see /components/ui/tooltip.tsx
+ */
 const TooltipProvider = TooltipPrimitive.Provider;
 
+/**
+ * Root tooltip component.
+ * @returns Tooltip element.
+ * @see /components/ui/tooltip.tsx
+ */
 const Tooltip = TooltipPrimitive.Root;
 
+/**
+ * Component that triggers the tooltip display.
+ * @returns TooltipTrigger element.
+ * @see /components/ui/tooltip.tsx
+ */
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
+/**
+ * Content container for the tooltip.
+ * @param props - Props to customize tooltip content.
+ * @returns TooltipContent element.
+ * @see /components/ui/tooltip.tsx
+ */
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
@@ -27,4 +54,10 @@ const TooltipContent = React.forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+/**
+ * Exports the tooltip components.
+ * @example
+ * import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '/components/ui/tooltip'
+ */
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };
+

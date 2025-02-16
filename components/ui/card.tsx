@@ -1,7 +1,18 @@
+/**
+ * Provides a set of Card components for content display.
+ * @module ui/card
+ * @packageDocumentation
+ */
+
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+/**
+ * Card renders a container with rounded borders and shadows.
+ * @returns The card container.
+ * @see /components/ui/card.tsx
+ */
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -17,6 +28,11 @@ const Card = React.forwardRef<
 ));
 Card.displayName = 'Card';
 
+/**
+ * CardHeader renders the header area of the card.
+ * @returns The card header.
+ * @see /components/ui/card.tsx
+ */
 const CardHeader = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -29,6 +45,11 @@ const CardHeader = React.forwardRef<
 ));
 CardHeader.displayName = 'CardHeader';
 
+/**
+ * CardTitle renders the title of the card.
+ * @returns The card title.
+ * @see /components/ui/card.tsx
+ */
 const CardTitle = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -44,6 +65,11 @@ const CardTitle = React.forwardRef<
 ));
 CardTitle.displayName = 'CardTitle';
 
+/**
+ * CardDescription renders the description of the card.
+ * @returns The card description.
+ * @see /components/ui/card.tsx
+ */
 const CardDescription = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -56,6 +82,11 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = 'CardDescription';
 
+/**
+ * CardContent renders the content area of the card.
+ * @returns The card content.
+ * @see /components/ui/card.tsx
+ */
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -64,6 +95,11 @@ const CardContent = React.forwardRef<
 ));
 CardContent.displayName = 'CardContent';
 
+/**
+ * CardFooter renders the footer area of the card.
+ * @returns The card footer.
+ * @see /components/ui/card.tsx
+ */
 const CardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -77,10 +113,6 @@ const CardFooter = React.forwardRef<
 CardFooter.displayName = 'CardFooter';
 
 export {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardContent,
+  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle
 };
+

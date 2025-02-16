@@ -1,5 +1,16 @@
+/**
+ * Custom hook to automatically scroll to the bottom of a container.
+ * @module useScrollToBottom
+ * @packageDocumentation
+ */
+
 import { useEffect, useRef, type RefObject } from 'react';
 
+/**
+ * Returns refs for the container and end elements so that mutations trigger scrolling.
+ * @returns An array containing the container ref and the end ref.
+ * @see /lib/utils
+ */
 export function useScrollToBottom<T extends HTMLElement>(): [
   RefObject<T>,
   RefObject<T>,

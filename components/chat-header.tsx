@@ -1,3 +1,9 @@
+/**
+ * Chat header component manages navigation and settings options.
+ * @module components/chat-header
+ * @packageDocumentation
+ */
+
 'use client';
 
 import Link from 'next/link';
@@ -7,12 +13,22 @@ import { useWindowSize } from 'usehooks-ts';
 import { ModelSelector } from '@/components/model-selector';
 import { SidebarToggle } from '@/components/sidebar-toggle';
 import { Button } from '@/components/ui/button';
+import { memo } from 'react';
 import { PlusIcon, VercelIcon } from './icons';
 import { useSidebar } from './ui/sidebar';
-import { memo } from 'react';
 import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 import { type VisibilityType, VisibilitySelector } from './visibility-selector';
 
+/**
+ * Pure chat header rendering component.
+ * @param chatId - Unique chat identifier.
+ * @param selectedModelId - Identifier for the selected model.
+ * @param selectedVisibilityType - Current visibility setting.
+ * @param isReadonly - Indicates if the chat is in read-only mode.
+ * @returns JSX element representing the chat header.
+ * @see /components/model-selector.tsx
+ * @see /components/visibility-selector.tsx
+ */
 function PureChatHeader({
   chatId,
   selectedModelId,

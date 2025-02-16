@@ -1,10 +1,21 @@
 'use client';
 
-import * as React from 'react';
+/**
+ * Provides a visual separator component.
+ * @module ui/separator
+ * @packageDocumentation
+ */
+
 import * as SeparatorPrimitive from '@radix-ui/react-separator';
+import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
+/**
+ * Separator renders a horizontal or vertical divider.
+ * @returns The separator element.
+ * @see /components/ui/separator.tsx
+ */
 const Separator = React.forwardRef<
   React.ElementRef<typeof SeparatorPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root>
@@ -29,3 +40,4 @@ const Separator = React.forwardRef<
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
 export { Separator };
+
